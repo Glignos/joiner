@@ -2,20 +2,14 @@
 #include  <stdlib.h>
 #include  <string.h>
 #include <assert.h>
+#include <stdint.h>
 #include <time.h>
-
-
-struct myTyple{
-  int32_t rowId;
-  int32_t value;
-};
-
-
+#include "join.c"
 
 int main (int argc, char* argv[]){
 
     int r=0, i=0, j=0;
-    struct myTyple *array=NULL;
+    struct myArray *array=NULL;
 
   // if ( (argc!=5) && (argc!=3) ){
   //    printf("Number of arguments is wrong!!!\n");
@@ -29,17 +23,19 @@ int main (int argc, char* argv[]){
 
     printf("Size given: %d\n", r);
 
-    array = malloc(sizeof(struct myTyple) * r);
+    array = malloc(sizeof(struct myArray));
+    array->tuples = malloc(sizeof(struct myTuple) * r);
 
     for(i=0; i<r; i++){
-      array[i].rowId=i;
-      array[i].value=rand()%10;
+      array->tuples[i].rowId=i;
+      array->tuples[i].value=rand()%100;
     }
 
     for(i=0; i<r; i++){
-      printf("RowId: %d , Value: %d\n", array[i].rowId, array[i].value );
+      printf("RowId: %d , Value: %d\n", array->tuples[i].rowId, array->tuples[i].value );
     }
 
+    free(array->tuples);
     free(array);
 
 }
