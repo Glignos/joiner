@@ -1,5 +1,8 @@
+#ifndef _JOIN_h_
+#define _JOIN_h_
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 
 struct myTuple{
@@ -66,9 +69,11 @@ struct psum{
 
 
 
-int bit_hash_function(int);
+int32_t bit_hash_function(int32_t);
 double calculate_buckets_needed();
 struct bucket_array* create_bucket_array();
 struct bucket_array* hash_data_array(struct myArray*);
 struct psum* create_psum_table(struct bucket_array*);
 int32_t* create_ordered_data_array(int , struct psum* , struct bucket_array*);
+
+#endif

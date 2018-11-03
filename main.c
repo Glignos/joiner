@@ -1,10 +1,8 @@
-#include  <stdio.h>
 #include  <stdlib.h>
 #include  <string.h>
 #include <assert.h>
-#include <stdint.h>
 #include <time.h>
-#include "join.c"
+#include "join.h"
 
 int main (int argc, char* argv[]){
 
@@ -27,7 +25,7 @@ int main (int argc, char* argv[]){
 
     array = malloc(sizeof(struct myArray));
     array->tuples = malloc(sizeof(struct myTuple) * r);
-
+	array->num_of_tuples = r;
     for(i=0; i<r; i++){
       array->tuples[i].rowId=i;
       array->tuples[i].value=rand()%100;
@@ -41,6 +39,6 @@ int main (int argc, char* argv[]){
     ordered_array = create_ordered_data_array(r, psum_table, buckets_table);
 
     free(array->tuples);
-    free(array);
+    free(array);//possible exception
 
 }
