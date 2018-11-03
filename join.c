@@ -63,7 +63,7 @@ struct psum* create_psum_table(struct bucket_array* bucket_table){
             psum_table->sums[0].hash_offset = 0;
         }
         else{
-            psum_table->sums[i].hash_offset = psum_table->sums[i-1].hash_offset + bucket_table->buckets[i].counter; //fixme something weird in bucket pointer
+            psum_table->sums[i].hash_offset = psum_table->sums[i-1].hash_offset + bucket_table->buckets[i-1].counter; //fixme something weird in bucket pointer
             //psum_table.sums[i].hash_value = 0;
         }
         
@@ -84,9 +84,12 @@ int32_t* create_ordered_data_array(int array_size, struct psum* psum_table, stru
         }
     }
 	printf("THE PARTY STARTS NOW \n");
-	for (int z = 0; z < 100; z++) {
-		printf("RowId: %d , Value: %d\n", ordered_array[z], ordered_array[z+100]);
+	for (int z = 0; z < array_size; z++) {
+		printf("RowId: %d , Value: %d\n", ordered_array[z], ordered_array[z+array_size]);
 	}
+    for(int w =0; w <buckets_table->num_of_buckets; w++){
+        printf("Bucket no %d starts with an offset of %d \n", w, psum_table->sums[w].hash_offset);
+    }
     return ordered_array;
 };
 
