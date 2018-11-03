@@ -68,7 +68,7 @@ struct psum{
 
 int bit_hash_function(int);
 double calculate_buckets_needed();
-struct bucket_array create_bucket_array();
-struct bucket_array hash_data_array(struct myArray*);
-struct psum create_psum_table(struct bucket_array);
-int32_t* create_ordered_data_array(int , struct psum , struct bucket_array);
+struct bucket_array* create_bucket_array();
+struct bucket_array* hash_data_array(struct myArray*);
+struct psum* create_psum_table(struct bucket_array*);
+int32_t* create_ordered_data_array(int , struct psum* , struct bucket_array*);
