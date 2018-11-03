@@ -10,7 +10,7 @@ int main (int argc, char* argv[]){
 
     int r=0, i=0, j=0;
     struct myArray *array=NULL;
-
+    struct bucket_array buckets_table;
   // if ( (argc!=5) && (argc!=3) ){
   //    printf("Number of arguments is wrong!!!\n");
   //    return 1;
@@ -34,7 +34,7 @@ int main (int argc, char* argv[]){
     for(i=0; i<r; i++){
       printf("RowId: %d , Value: %d\n", array->tuples[i].rowId, array->tuples[i].value );
     }
-
+    buckets_table = hash_data_array(array);
     free(array->tuples);
     free(array);
 
