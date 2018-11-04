@@ -12,13 +12,16 @@ CFLAGS =  -Wall -g
 #hash.o: hash.c hash.h
 #	$(CC) $(CFLAGS) -c hash.c
 all: main.o join.o
-	gcc -o main main.o join.o -g
+	gcc -o main main.o bucketChain.o join.o  -g
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
+
+bucketChain.o: bucketChain.c bucketChain.h
+	$(CC) $(CFLAGS) -c bucketChain.c
 
 join.o: join.c
 	$(CC) $(CFLAGS) -c join.c
 
 clean :
-	rm  main.o join.o main
+	rm  main.o join.o main bucketChain.o
