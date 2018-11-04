@@ -11,13 +11,13 @@ CFLAGS =  -Wall -g
 
 #hash.o: hash.c hash.h
 #	$(CC) $(CFLAGS) -c hash.c
-all: main.o join.o
+all: main.o join.o bucketChain.o
 	gcc -o main main.o bucketChain.o join.o  -g
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
 
-bucketChain.o: bucketChain.c bucketChain.h
+bucketChain.o: bucketChain.c
 	$(CC) $(CFLAGS) -c bucketChain.c
 
 join.o: join.c
