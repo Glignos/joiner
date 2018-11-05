@@ -3,13 +3,13 @@
 #include <assert.h>
 #include <time.h>
 #include "bucketChain.h"
-#include "join.h"
 
 
 int main (int argc, char* argv[]){
 
-    int r=0, i=0, j=0;
+    int r=0, i=0;
     struct myArray *array=NULL;
+    struct myArray *array2=NULL;
     struct bucket_array* buckets_table;
     struct psum* psum_table;
     struct arrayBucketChain* arrayBctChn=NULL;
@@ -32,6 +32,13 @@ int main (int argc, char* argv[]){
     for(i=0; i<r; i++){
       array->tuples[i].rowId=i;
       array->tuples[i].value=rand()%100;
+    }
+    array2 = malloc(sizeof(struct myArray));
+    array2->tuples = malloc(sizeof(struct myTuple) * r);
+	array2->num_of_tuples = r;
+    for(i=0; i<r; i++){
+      array2->tuples[i].rowId=i;
+      array2->tuples[i].value=rand()%100;
     }
     buckets_table = hash_data_array(array);
     psum_table = create_psum_table(buckets_table);

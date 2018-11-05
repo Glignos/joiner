@@ -1,5 +1,4 @@
-#ifndef _JOIN_h_
-#define _JOIN_h_
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -76,4 +75,3 @@ struct bucket_array* hash_data_array(struct myArray*);
 struct psum* create_psum_table(struct bucket_array*);
 int32_t* create_ordered_data_array(int , struct psum* , struct bucket_array*);
 
-#endif
