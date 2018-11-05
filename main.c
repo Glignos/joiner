@@ -55,10 +55,13 @@ int main (int argc, char* argv[]){
     for(i=0; i<buckets_table->num_of_buckets; i++){
       free(arrayBctChn[i].bucket);
       free(arrayBctChn[i].chain);
-
+      free(buckets_table->buckets[i].rows);
     }
+    free(buckets_table->buckets);
+    free(buckets_table);
     free(arrayBctChn);
-
+    free(ordered_array);
+    free(psum_table->sums);
+    free(psum_table);
     free(array);
-
 };
