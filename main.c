@@ -51,8 +51,6 @@ int main (int argc, char* argv[]){
 
     arrayBctChn=createBucketChainArray(buckets_table);
 
-
-
     free(array->tuples);
     for(i=0; i<buckets_table->num_of_buckets; i++){
       free(arrayBctChn[i].bucket);
