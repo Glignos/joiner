@@ -29,6 +29,10 @@ int main (int argc, char* argv[]){
         for(int y=0;y<=queries->query_array[i].comparisons_num;y++){
             printf("Comparison no %d is between table %d and column %d with table %d and column %d with operator %d \n",
             y,queries->query_array[i].comparisons[y].table_pair_1.table,queries->query_array[i].comparisons[y].table_pair_1.column,queries->query_array[i].comparisons[y].table_pair_2.table,queries->query_array[i].comparisons[y].table_pair_2.column,queries->query_array[i].comparisons[y].comparison_type );
+            printf("Comparison number is %d \n",queries->query_array[i].comparisons[y].number);
+        }
+        for(int y=0;y<=queries->query_array[i].sums_num;y++){
+            printf("Sum no %d on table %d and column %d \n",y ,queries->query_array[i].sums[y].table ,queries->query_array[i].sums[y].column);
         }
         printf("|||||||||||\n");
     }

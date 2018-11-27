@@ -1,7 +1,6 @@
 #include  <stdio.h>
 #include <stdlib.h>
-
-static char* comparison_types[] = {"=", ">", "<"};
+#include <ctype.h>
 
 struct array_n_column{
     int table;
