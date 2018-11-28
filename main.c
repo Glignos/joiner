@@ -2,13 +2,23 @@
 #include  <string.h>
 #include <assert.h>
 #include <time.h>
+#include <inttypes.h>
 #include "bucketChain.h"
 #include "query_parser.h"
+#include "nmap.h"
+
+
 
 int main (int argc, char* argv[]){
 
-    int r=0, i=0;
+    FILE *fp;
+
+
+    uint64_t numTuples;
+    char fnamer[100]="";
+    int r=0, i=0, j=0, numbOfU64;
     struct myArray *array=NULL;
+    struct nMap nmap;
     struct myArray *array2=NULL;
     struct bucket_array* buckets_table;
     struct psum* psum_table;
@@ -16,6 +26,13 @@ int main (int argc, char* argv[]){
     struct queries* queries;
     int32_t* ordered_array;
     FILE* query_file;
+    long lSize;
+
+  // if ( (argc!=5) && (argc!=3) ){
+  //    printf("Number of arguments is wrong!!!\n");
+  //    return 1;
+  //  }
+
     srand(time(0));
     printf("Reading file \n");
     query_file = fopen("small.work", "r");
@@ -68,6 +85,57 @@ int main (int argc, char* argv[]){
 
     arrayBctChn=createBucketChainArray(buckets_table);
 
+
+
+    printf("Give file path:\n");
+    scanf("%s",&fnamer);
+    fp=fopen(fnamer,"rb");
+    if(fp==NULL)
+    	{
+    		printf("\n%s\" File NOT FOUND!\n",fnamer);
+    	//	getch();
+    		exit(1);
+    	}
+
+    fseek (fp , 0 , SEEK_END);
+    lSize = ftell (fp);
+    rewind (fp);
+    numbOfU64= lSize / sizeof(uint64_t);
+    //printf("Number of U64: %d\n", numbOfU64);/*for testing*/
+
+    fread(&nmap.numTuples ,sizeof(uint64_t),1,fp);
+    //printf("Num tuples: %" PRIu64 "\n", nmap.numTuples); /*for testing*/
+
+    fread(&nmap.numColumns ,sizeof(uint64_t),1,fp);
+    //printf("Num of numColumns: %" PRIu64 "\n", nmap.numColumns); /*for testing*/
+
+    nmap.tuples=malloc( nmap.numTuples * sizeof(uint64_t *));
+    for (i=0; i<nmap.numTuples; i++){
+      nmap.tuples[i]=malloc( nmap.numColumns * sizeof(uint64_t));
+    }
+
+    for (j=0; j<nmap.numColumns; j++){
+      for (i=0; i<nmap.numTuples; i++){
+        fread(&nmap.tuples[i][j] ,sizeof(uint64_t),1,fp);
+      }
+    }
+
+
+    //Left here for testing
+    // for (j=0; j<nmap.numColumns; j++){
+    //   for (i=0; i<nmap.numTuples; i++){
+    //     printf("Column:%d Row:%d Value: %" PRIu64 "\n", j, i, nmap.tuples[i][j]);
+    //   }
+    // }
+
+
+
+    fclose(fp);
+
+    for (i=0; i<nmap.numTuples; i++){
+      free(nmap.tuples[i]);
+    }
+    free(nmap.tuples);
     free(array->tuples);
     for(i=0; i<buckets_table->num_of_buckets; i++){
       free(arrayBctChn[i].bucket);
