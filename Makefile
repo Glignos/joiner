@@ -11,8 +11,8 @@ CFLAGS =  -Wall -g
 
 #hash.o: hash.c hash.h
 #	$(CC) $(CFLAGS) -c hash.c
-all: main.o join.o bucketChain.o
-	gcc -o main main.o bucketChain.o join.o  -g
+all: main.o join.o bucketChain.o query_parser.o
+	gcc -o main main.o bucketChain.o join.o query_parser.o -g
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
@@ -23,5 +23,8 @@ bucketChain.o: bucketChain.c
 join.o: join.c
 	$(CC) $(CFLAGS) -c join.c
 
+query_parser.o: query_parser.c
+	$(CC) $(CFLAGS) -c query_parser.c
+
 clean :
-	rm  main.o join.o main bucketChain.o
+	rm  main.o join.o main bucketChain.o query_parser.o
