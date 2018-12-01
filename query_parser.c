@@ -2,7 +2,7 @@
 
 static char comparison_types[] = {'=', '>', '<'};
 
-struct query* parse_stream(FILE* query_stream){
+struct queries* parse_stream(FILE* query_stream){
     char buff[255];
     int items_read, table_or_int, i;
     struct query* query;
@@ -30,10 +30,10 @@ struct query* parse_stream(FILE* query_stream){
         query->table_ids_array = malloc(10 *sizeof(int));
         query->tables_num = -1;
         query->array_size = 5;
-        query->comparisons = malloc(10 *sizeof(struct comparisons));
+        query->comparisons = malloc(10 *sizeof(struct comparison));
         query->comparisons_num = -1;
         query->comparisons_size = 5;
-        query->sums = malloc(10* sizeof(struct array_n_column));
+        query->sums = malloc(10* sizeof(struct table_n_column));
         query->sums_size = 10;
         query->sums_num = -1;
         //its quite big
@@ -80,7 +80,7 @@ struct query* parse_stream(FILE* query_stream){
             query->comparisons_num++;
             if(query->comparisons_size == query->comparisons_num){
                 query->comparisons_size = query->comparisons_size * 2;
-                query->comparisons = realloc(query->comparisons, query->comparisons_size * sizeof(struct comparisons));
+                query->comparisons = realloc(query->comparisons, query->comparisons_size * sizeof(struct comparison));
             }
             table_or_int = 0;
             while(1){
@@ -150,7 +150,7 @@ struct query* parse_stream(FILE* query_stream){
                 query->sums_num++;
                 if(query->sums_num == query->sums_size){
                     query->sums_size = query->sums_size * 2;
-                    query->sums = realloc(query->sums, query->array_size * sizeof(struct array_n_column));
+                    query->sums = realloc(query->sums, query->array_size * sizeof(struct table_n_column));
                 }
                 table_or_int = 0;
                 while(1){
