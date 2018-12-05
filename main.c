@@ -4,6 +4,7 @@
 #include <time.h>
 #include <inttypes.h>
 #include "bucketChain.h"
+#include "query_parser.h"
 #include "nmap.h"
 
 
@@ -22,7 +23,10 @@ int main (int argc, char* argv[]){
     struct bucket_array* buckets_table;
     struct psum* psum_table;
     struct arrayBucketChain* arrayBctChn=NULL;
+    struct queries* queries;
     int32_t* ordered_array;
+    FILE* query_file;
+
     long lSize;
 
   // if ( (argc!=5) && (argc!=3) ){
@@ -31,6 +35,26 @@ int main (int argc, char* argv[]){
   //  }
 
     srand(time(0));
+    printf("Reading file \n");
+    query_file = fopen("small.work", "r");
+    queries = parse_stream(query_file);
+    printf("Parsed \n");
+    for(int i=0;i<=queries->number_of_queries;i++){
+        printf("Query no %d \n",i);
+        for(int y=0;y<=queries->query_array[i].tables_num;y++){
+            printf("Array no %d used \n",queries->query_array[i].table_ids_array[y]);
+        }
+        for(int y=0;y<=queries->query_array[i].comparisons_num;y++){
+            printf("Comparison no %d is between table %d and column %d with table %d and column %d with operator %d \n",
+            y,queries->query_array[i].comparisons[y].table_pair_1.table,queries->query_array[i].comparisons[y].table_pair_1.column,queries->query_array[i].comparisons[y].table_pair_2.table,queries->query_array[i].comparisons[y].table_pair_2.column,queries->query_array[i].comparisons[y].comparison_type );
+            printf("Comparison number is %d \n",queries->query_array[i].comparisons[y].number);
+        }
+        for(int y=0;y<=queries->query_array[i].sums_num;y++){
+            printf("Sum no %d on table %d and column %d \n",y ,queries->query_array[i].sums[y].table ,queries->query_array[i].sums[y].column);
+        }
+        printf("|||||||||||\n");
+    }
+
 
     printf( "Ente size for R :");
     scanf("%d", &r);
