@@ -124,6 +124,7 @@ struct queries* parse_stream(FILE* query_stream){
                 //printf("got number %d \n", table_or_int);
             }
             else if(buff[i + 1] == '.'){//in the case its an 
+                query->comparisons[query->comparisons_num].number = table_or_int; //its not a number and number is null maybe fixme
                 i++;//reaching the dot
                 i++;//reaching the column
                 //printf("got comparison2 table %d \n", table_or_int);
