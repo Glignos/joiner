@@ -18,7 +18,7 @@ int main (int argc, char* argv[]){
     char fnamer[100]="";
     int r=0, i=0, j=0, numbOfU64;
     struct myArray *array=NULL;
-    struct nMap nmap;
+    struct nMap *nmap1=NULL, *nmap2=NULL;
     struct myArray *array2=NULL;
     struct bucket_array* buckets_table;
     struct psum* psum_table;
@@ -26,6 +26,7 @@ int main (int argc, char* argv[]){
     struct queries* queries;
     int32_t* ordered_array;
     FILE* query_file;
+
     long lSize;
 
   // if ( (argc!=5) && (argc!=3) ){
@@ -87,7 +88,7 @@ int main (int argc, char* argv[]){
 
 
 
-    printf("Give file path:\n");
+    printf("Give file1 path:\n");
     scanf("%s",&fnamer);
     fp=fopen(fnamer,"rb");
     if(fp==NULL)
@@ -96,46 +97,42 @@ int main (int argc, char* argv[]){
     	//	getch();
     		exit(1);
     	}
+      nmap1=nmapCreate(fp);
+      fclose(fp);
+      // printf("Num tuples: %" PRIu64 "\n", nmap1->numTuples); /*for testing*/
+      // printf("Num of numColumns: %" PRIu64 "\n", nmap1->numColumns); /*for testing*/
+      // //Left here for testing
+      // for (j=0; j<nmap1->numColumns; j++){
+      //   for (i=0; i<nmap1->numTuples; i++){
+      //     printf("Column:%d Row:%d Value: %" PRIu64 "\n", j, i, nmap1->tuples[i][j]);
+      //   }
+      // }
 
-    fseek (fp , 0 , SEEK_END);
-    lSize = ftell (fp);
-    rewind (fp);
-    numbOfU64= lSize / sizeof(uint64_t);
-    //printf("Number of U64: %d\n", numbOfU64);/*for testing*/
 
-    fread(&nmap.numTuples ,sizeof(uint64_t),1,fp);
-    //printf("Num tuples: %" PRIu64 "\n", nmap.numTuples); /*for testing*/
 
-    fread(&nmap.numColumns ,sizeof(uint64_t),1,fp);
-    //printf("Num of numColumns: %" PRIu64 "\n", nmap.numColumns); /*for testing*/
 
-    nmap.tuples=malloc( nmap.numTuples * sizeof(uint64_t *));
-    for (i=0; i<nmap.numTuples; i++){
-      nmap.tuples[i]=malloc( nmap.numColumns * sizeof(uint64_t));
+    printf("Give file2 path:\n");
+    scanf("%s",&fnamer);
+    fp=fopen(fnamer,"rb");
+    if(fp==NULL)
+    	{
+    		printf("\n%s\" File NOT FOUND!\n",fnamer);
+    	//	getch();
+    		exit(1);
+    	}
+      nmap2=nmapCreate(fp);
+
+
+
+    for (i=0; i<nmap1->numTuples; i++){
+      free(nmap1->tuples[i]);
     }
-
-    for (j=0; j<nmap.numColumns; j++){
-      for (i=0; i<nmap.numTuples; i++){
-        fread(&nmap.tuples[i][j] ,sizeof(uint64_t),1,fp);
-      }
+    free(nmap1->tuples);
+    for (i=0; i<nmap2->numTuples; i++){
+      free(nmap2->tuples[i]);
     }
+    free(nmap2->tuples);
 
-
-    //Left here for testing
-    // for (j=0; j<nmap.numColumns; j++){
-    //   for (i=0; i<nmap.numTuples; i++){
-    //     printf("Column:%d Row:%d Value: %" PRIu64 "\n", j, i, nmap.tuples[i][j]);
-    //   }
-    // }
-
-
-
-    fclose(fp);
-
-    for (i=0; i<nmap.numTuples; i++){
-      free(nmap.tuples[i]);
-    }
-    free(nmap.tuples);
     free(array->tuples);
     for(i=0; i<buckets_table->num_of_buckets; i++){
       free(arrayBctChn[i].bucket);
