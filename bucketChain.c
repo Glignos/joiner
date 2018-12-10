@@ -47,7 +47,7 @@ struct arrayBucketChain* createBucketChainArray(struct bucket_array* bucket_tabl
   for (i=0; i<bucket_table->num_of_buckets; i++){
     arrayBcktChn[i].bucket=NULL;
     arrayBcktChn[i].chain=NULL;
-    
+
   }
 
   for (i=0; i<bucket_table->num_of_buckets; i++){
@@ -98,7 +98,7 @@ struct arrayBucketChain* createBucketChainArray(struct bucket_array* bucket_tabl
   return arrayBcktChn;
 }
 
-struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct arrayBucketChain* arrayBctChn, int array_size, struct myArray* array_to_search){
+struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct arrayBucketChain* arrayBctChn, int array_size, struct nColumns array_to_search){
     int32_t value_of_hash;
     struct bucket* bucket_to_search;
     int value_of_prime_hash, number_of_matches_per_buffer, chain_value;//chain value is the pointer to bucket
@@ -113,14 +113,14 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
     results = initial_buffer;
 
     for(int i=0; i<array_size; i++){
-      value_of_hash = bit_hash_function(array_to_search->tuples[i].value);//get bitwise hash value
+      value_of_hash = bit_hash_function(array_to_search.tuples[i]);//get bitwise hash value
       bucket_to_search = &buckets_table->buckets[value_of_hash];
 
-      value_of_prime_hash = hash(array_to_search->tuples[i].value, 73);//get prime ahsh value
+      value_of_prime_hash = hash(array_to_search.tuples[i], 73);//get prime ahsh value
       chain_value = arrayBctChn[value_of_hash].bucket[value_of_prime_hash];
 
       while(chain_value != -1){
-          if(bucket_to_search->rows[chain_value].data == array_to_search->tuples[i].value){//check if value from prime hash exists in bucket
+          if(bucket_to_search->rows[chain_value].data == array_to_search.tuples[i]){//check if value from prime hash exists in bucket
             if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
                   results->next_result_buffer = malloc(sizeof(struct result_buffer*));
                   results = results->next_result_buffer;
@@ -129,7 +129,7 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
                   results->next_result_buffer = NULL;
             }
             results->matches[results->counter].row_id_1 = bucket_to_search->rows[chain_value].row_id;//save matches in result buffer
-            results->matches[results->counter].row_id_2 = array_to_search->tuples[i].rowId;
+            results->matches[results->counter].row_id_2 = i;
             results->counter++;
           }
           chain_value = arrayBctChn[value_of_hash].chain[chain_value];//get next chain value
