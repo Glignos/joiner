@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-
+#include <inttypes.h>
+#include "nmap.h"
 
 struct myTuple{
   int32_t rowId;
@@ -17,7 +18,7 @@ struct myArray{
 //mystructs
 struct row_data{
     int32_t row_id;
-    int32_t data;
+    uint64_t data;
 };
 //bucket with data
 struct bucket{
@@ -44,10 +45,9 @@ struct psum{
 
 
 
-int32_t bit_hash_function(int32_t);
+int32_t bit_hash_function(uint64_t);
 double calculate_buckets_needed();
 struct bucket_array* create_bucket_array();
-struct bucket_array* hash_data_array(struct myArray*);
+struct bucket_array* hash_data_array(struct nColumns, uint64_t);
 struct psum* create_psum_table(struct bucket_array*);
 int32_t* create_ordered_data_array(int , struct psum* , struct bucket_array*);
-

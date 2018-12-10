@@ -5,7 +5,7 @@
 #include <inttypes.h>
 #include "bucketChain.h"
 #include "query_parser.h"
-#include "nmap.h"
+//#include "nmap.h"
 
 
 
@@ -24,6 +24,7 @@ int main (int argc, char* argv[]){
     struct psum* psum_table;
     struct arrayBucketChain* arrayBctChn=NULL;
     struct queries* queries;
+    struct result_buffer* resultsnm;
     int32_t* ordered_array;
     FILE* query_file;
 
@@ -75,16 +76,18 @@ int main (int argc, char* argv[]){
       array2->tuples[i].rowId=i;
       array2->tuples[i].value=rand()%100;
     }
-    buckets_table = hash_data_array(array);
-    psum_table = create_psum_table(buckets_table);
-    ordered_array = create_ordered_data_array(r, psum_table, buckets_table);
+
+
+    //buckets_table = hash_data_array(array);
+    //psum_table = create_psum_table(buckets_table);
+    //ordered_array = create_ordered_data_array(r, psum_table, buckets_table);
 
 
     for(i=0; i<r; i++){
       printf("RowId: %d , Value: %d\n", array->tuples[i].rowId, array->tuples[i].value );
     }
 
-    arrayBctChn=createBucketChainArray(buckets_table);
+    //arrayBctChn=createBucketChainArray(buckets_table);
 
 
 
@@ -99,15 +102,18 @@ int main (int argc, char* argv[]){
     	}
       nmap1=nmapCreate(fp);
       fclose(fp);
-      // printf("Num tuples: %" PRIu64 "\n", nmap1->numTuples); /*for testing*/
-      // printf("Num of numColumns: %" PRIu64 "\n", nmap1->numColumns); /*for testing*/
-      // //Left here for testing
-      // for (j=0; j<nmap1->numColumns; j++){
-      //   for (i=0; i<nmap1->numTuples; i++){
-      //     printf("Column:%d Row:%d Value: %" PRIu64 "\n", j, i, nmap1->tuples[i][j]);
-      //   }
-      // }
+      printf("Num tuples: %" PRIu64 "\n", nmap1->numTuples); /*for testing*/
+      printf("Num of numColumns: %" PRIu64 "\n", nmap1->numColumns); /*for testing*/
+      //Left here for testing
+      for (j=0; j<nmap1->numColumns; j++){
+        for (i=0; i<nmap1->numTuples; i++){
+          printf("Column:%d Row:%d Value: %" PRIu64 "\n", j, i, nmap1->ncolumns[j].tuples[i]);
+        }
+      }
 
+      buckets_table = hash_data_array(nmap1->ncolumns[2], nmap1->numTuples);
+      psum_table = create_psum_table(buckets_table);
+      arrayBctChn=createBucketChainArray(buckets_table);
 
 
 
@@ -122,16 +128,17 @@ int main (int argc, char* argv[]){
     	}
       nmap2=nmapCreate(fp);
 
+    resultsnm=match_arrays(buckets_table, arrayBctChn, nmap2->numTuples, nmap2->ncolumns[1]); 
 
 
-    for (i=0; i<nmap1->numTuples; i++){
-      free(nmap1->tuples[i]);
+    for (i=0; i<nmap1->numColumns; i++){
+      free(nmap1->ncolumns[i].tuples);
     }
-    free(nmap1->tuples);
-    for (i=0; i<nmap2->numTuples; i++){
-      free(nmap2->tuples[i]);
+    free(nmap1->ncolumns);
+    for (i=0; i<nmap2->numColumns; i++){
+      free(nmap2->ncolumns[i].tuples);
     }
-    free(nmap2->tuples);
+    free(nmap2->ncolumns);
 
     free(array->tuples);
     for(i=0; i<buckets_table->num_of_buckets; i++){
@@ -142,7 +149,7 @@ int main (int argc, char* argv[]){
     free(buckets_table->buckets);
     free(buckets_table);
     free(arrayBctChn);
-    free(ordered_array);
+    //free(ordered_array);
     free(psum_table->sums);
     free(psum_table);
     free(array);

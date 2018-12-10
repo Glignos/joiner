@@ -22,15 +22,15 @@ struct nMap *nmapCreate(FILE *fp){
 
   fread(&nmap->numColumns ,sizeof(uint64_t),1,fp);
   //printf("Num of numColumns: %" PRIu64 "\n", nmap.numColumns); /*for testing*/
-
-  nmap->tuples=malloc( nmap->numTuples * sizeof(uint64_t *));
-  for (i=0; i<nmap->numTuples; i++){
-    nmap->tuples[i]=malloc( nmap->numColumns * sizeof(uint64_t));
+  nmap->ncolumns=malloc( nmap->numColumns * sizeof(uint64_t));
+  //nmap->tuples=malloc( nmap->numTuples * sizeof(uint64_t *));
+  for (i=0; i<nmap->numColumns; i++){
+    nmap->ncolumns[i].tuples=malloc( nmap->numTuples * sizeof(uint64_t));
   }
 
   for (j=0; j<nmap->numColumns; j++){
     for (i=0; i<nmap->numTuples; i++){
-      fread(&nmap->tuples[i][j] ,sizeof(uint64_t),1,fp);
+      fread(&nmap->ncolumns[j].tuples[i] ,sizeof(uint64_t),1,fp);
     }
   }
 
