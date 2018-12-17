@@ -14,6 +14,8 @@ struct result_buffer{
   struct matches* matches;
   struct result_buffer* next_result_buffer;
   int counter;
+  int total_results;
+  int number_of_matches_per_buffer;
 };
 
 

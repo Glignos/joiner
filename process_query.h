@@ -1,5 +1,6 @@
 #include "nmap.h"
 #include "query_parser.h"
+#include "bucketChain.h"
 
 //temporary table storage table->column->operation->table->column if match ->nMap table
 //should be preinitialized in main
@@ -26,6 +27,7 @@ struct generated_table{
     struct nMap* table_pointer;
     int* tables_used;
     int num_of_tables;
+    int* columns_per_table;
 };
 
 struct generated_tables{
@@ -37,6 +39,10 @@ void run_queries(struct nMap*, struct queries*, struct table*);
 
 void run_query(struct nMap*, struct query, struct table*);
 
-void update_generated_table_mapping(struct generated_tables, struct comparison, int, int,struct nMap*);
+void update_generated_table_mapping(struct generated_tables*, struct comparison, int, int,struct nMap*);
 
 struct nMap* check_temps(struct comparison, struct table*);
+
+void crossjoin_tables(struct generated_table*, struct generated_table*);
+
+struct nMap* create_table_from_matches(struct result_buffer*, struct nMap*, struct nMap*)
