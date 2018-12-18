@@ -22,7 +22,7 @@ struct nMap *nmapCreate(FILE *fp){
 
   fread(&nmap->numColumns ,sizeof(uint64_t),1,fp);
   //printf("Num of numColumns: %" PRIu64 "\n", nmap.numColumns); /*for testing*/
-  nmap->ncolumns=malloc( nmap->numColumns * sizeof(uint64_t));
+  nmap->ncolumns=malloc( nmap->numColumns * sizeof(uint64_t));//andreas mipws sizoef tou pointer?
   //nmap->tuples=malloc( nmap->numTuples * sizeof(uint64_t *));
   for (i=0; i<nmap->numColumns; i++){
     nmap->ncolumns[i].tuples=malloc( nmap->numTuples * sizeof(uint64_t));
@@ -35,4 +35,12 @@ struct nMap *nmapCreate(FILE *fp){
   }
 
   return nmap;
+}
+
+void free_nMap(struct nMap* nMap){
+  for(int i=0; i<nMap->numColumns;i++){
+    free(nMap->ncolumns[i].tuples);
+  }
+  free(nMap->ncolumns);
+  free(nMap);
 }

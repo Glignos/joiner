@@ -16,5 +16,7 @@ struct nColumns{
   uint64_t *tuples;
 };
 
+void free_nMap(struct nMap*);
+
 struct nMap *nmapCreate(FILE *fp);
 #endif

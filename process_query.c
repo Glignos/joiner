@@ -1,5 +1,21 @@
 #include "process_query.h"
 
+
+void free_generated_table(struct generated_table* generated_table){
+    //should be managed beforehand free_nMap(generated_table->table_pointer);
+    free(generated_table->tables_used);
+    free(generated_table->columns_per_table);
+    free(generated_table);
+}
+
+void join_tables_used(struct generated_table* table1, struct generated_table* table2){
+    for(int i=0;i<table2->num_of_tables; i++){
+        table1->tables_used[table1->num_of_tables] = table2->tables_used[i];
+        table1->columns_per_table[table1->num_of_tables] = table2->columns_per_table[i];
+        table1->num_of_tables++;
+    }
+}
+
 void crossjoin_tables(struct generated_table* table1, struct generated_table* table2){ //free second pointer move crossjoined table to first one
     struct nMap* newTable = malloc(sizeof(struct nMap));
     int new_num_of_columns = table1->table_pointer->numColumns+table2->table_pointer->numColumns;
@@ -18,6 +34,11 @@ void crossjoin_tables(struct generated_table* table1, struct generated_table* ta
             }
         }
     }
+    free_nMap(table1->table_pointer);
+    free_nMap(table2->table_pointer);
+    table1->table_pointer = newTable;
+    join_tables_used(table1,table2);
+
 }
 
 struct nMap* create_table_from_matches(struct result_buffer* result_buffer, struct nMap* table1, struct nMap* table2){
@@ -56,20 +77,18 @@ struct nMap* check_temps(struct comparison comparison, struct table* tables){
 
 
 void update_generated_table_mapping(struct generated_tables* generated_tables, struct comparison comparison,int table1_replaced, int table2_replaced, struct nMap* newTable){
-    int align_tables_after_delete = 0;
-    struct generated_table* temp_table;
-    int smaller_num;
     if(table1_replaced == table2_replaced){
-        free(generated_tables->tables[table1_replaced].table_pointer);
+        free_nMap(generated_tables->tables[table1_replaced].table_pointer);
         generated_tables->tables[table1_replaced].table_pointer = newTable;
     }
     else if(table2_replaced && table1_replaced){
             //free previous
-            free(generated_tables->tables[table2_replaced].table_pointer);
-            free(generated_tables->tables[table1_replaced].table_pointer);
+            free_nMap(generated_tables->tables[table2_replaced].table_pointer);
+            free_nMap(generated_tables->tables[table1_replaced].table_pointer);
             generated_tables->tables[table1_replaced].table_pointer = newTable;//assign new and add new table to the used list
-            generated_tables->tables[table1_replaced].num_of_tables++;
-            generated_tables->tables[table1_replaced].tables_used[generated_tables->tables[table1_replaced].num_of_tables - 1] = comparison.table_pair_2.table;
+            join_tables_used(&generated_tables->tables[table1_replaced],&generated_tables->tables[table2_replaced]);//fixme maybe
+            //generated_tables->tables[table1_replaced].num_of_tables++;
+            //generated_tables->tables[table1_replaced].tables_used[generated_tables->tables[table1_replaced].num_of_tables - 1] = comparison.table_pair_2.table;
             generated_tables->total_tables--;//we decrease since we have one less array
             for(int z=table2_replaced; z<generated_tables->total_tables;z++){
                 memcpy(&generated_tables->tables[z], &generated_tables->tables[z+1], sizeof(struct generated_table));//we remove the empty element from the array
@@ -77,19 +96,21 @@ void update_generated_table_mapping(struct generated_tables* generated_tables, s
         }
     else if(table1_replaced){
             //free previous
-            free(generated_tables->tables[table1_replaced].table_pointer);
+            free_nMap(generated_tables->tables[table1_replaced].table_pointer);
             generated_tables->tables[table1_replaced].table_pointer = newTable;
             if(comparison.number == NULL){//if we used a number no additional table is used
             generated_tables->tables[table1_replaced].num_of_tables++;
             generated_tables->tables[table1_replaced].tables_used[generated_tables->tables[table1_replaced].num_of_tables - 1] = comparison.table_pair_2.table;
+            generated_tables->tables[table1_replaced].columns_per_table[generated_tables->tables[table1_replaced].num_of_tables - 1] = newTable->numColumns;
             }
         }
         else if(table2_replaced){
             //free previous
-            free(generated_tables->tables[table2_replaced].table_pointer);//free previous generated table
+            free_nMap(generated_tables->tables[table2_replaced].table_pointer);//free previous generated table
             generated_tables->tables[table2_replaced].table_pointer = newTable;//assign new
             generated_tables->tables[table2_replaced].num_of_tables++;
             generated_tables->tables[table2_replaced].tables_used[generated_tables->tables[table2_replaced].num_of_tables - 1] = comparison.table_pair_1.table;//replace and add new table to the tables used to produce the current one
+            generated_tables->tables[table2_replaced].columns_per_table[generated_tables->tables[table2_replaced].num_of_tables - 1] = newTable->numColumns;
         }
 }
 
