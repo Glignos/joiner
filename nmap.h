@@ -1,4 +1,5 @@
-
+#ifndef NMAP_H
+#define NMAP_H
 #include <inttypes.h>
 #include  <stdlib.h>
 #include <stdio.h>
@@ -16,3 +17,4 @@ struct nColumns{
 };
 
 struct nMap *nmapCreate(FILE *fp);
+#endif

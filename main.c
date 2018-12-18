@@ -5,8 +5,8 @@
 #include <inttypes.h>
 #include "bucketChain.h"
 #include "query_parser.h"
-//#include "nmap.h"
-//#include "process_query.h"
+#include "nmap.h"
+#include "process_query.h"
 
 
 

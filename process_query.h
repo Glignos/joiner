@@ -1,3 +1,5 @@
+#ifndef PROCESS_QUERY_H
+#define PROCESS_QUERY_H
 #include "nmap.h"
 #include "query_parser.h"
 #include "bucketChain.h"
@@ -45,4 +47,6 @@ struct nMap* check_temps(struct comparison, struct table*);
 
 void crossjoin_tables(struct generated_table*, struct generated_table*);
 
-struct nMap* create_table_from_matches(struct result_buffer*, struct nMap*, struct nMap*)
+struct nMap* create_table_from_matches(struct result_buffer*, struct nMap*, struct nMap*);
+
+#endif

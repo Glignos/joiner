@@ -1,6 +1,6 @@
 #include "process_query.h"
 
-void crossjoin_tables(struct generated_table* table1, struct generated_table* table2){//free second pointer move crossjoined table to first one
+void crossjoin_tables(struct generated_table* table1, struct generated_table* table2){ //free second pointer move crossjoined table to first one
     struct nMap* newTable = malloc(sizeof(struct nMap));
     int new_num_of_columns = table1->table_pointer->numColumns+table2->table_pointer->numColumns;
     int new_num_of_tuples = table1->table_pointer->numTuples*table2->table_pointer->numTuples;

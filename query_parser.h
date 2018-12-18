@@ -1,3 +1,5 @@
+#ifndef QUERY_PARSER_H
+#define QUERY_PARSER_H
 #include  <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -33,3 +35,5 @@ struct queries{
 };
 
 struct queries* parse_stream(FILE* );
+
+#endif
