@@ -105,8 +105,8 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
     struct result_buffer* initial_buffer;
     struct result_buffer* results;
 
-    number_of_matches_per_buffer = (((1024*1024) - sizeof(struct result_buffer*)) -3*sizeof(int) / sizeof(struct matches));
-    initial_buffer = malloc(sizeof(struct result_buffer*));
+    number_of_matches_per_buffer = (((1024*1024) - sizeof(struct matches*) - sizeof(struct result_buffer*)) -3*sizeof(int) / sizeof(struct matches));
+    initial_buffer = malloc(sizeof(struct result_buffer));
     initial_buffer->counter = 0;
     initial_buffer->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
     initial_buffer->next_result_buffer = NULL;
@@ -124,7 +124,7 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
       while(chain_value != -1){
           if(bucket_to_search->rows[chain_value].data == array_to_search.tuples[i]){//check if value from prime hash exists in bucket
             if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
-                  results->next_result_buffer = malloc(sizeof(struct result_buffer*));
+                  results->next_result_buffer = malloc(sizeof(struct result_buffer));
                   results->next_result_buffer = results->total_results;
                   results = results->next_result_buffer;
                   results->counter = 0;
