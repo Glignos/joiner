@@ -18,19 +18,23 @@ int main (int argc, char* argv[]){
 
     uint64_t numTuples;
     char fnamer[100]="";
-    int r=0, i=0, j=0, numbOfU64;
+    int r=0, i=0, j=0, numbOfU64, ncnt=0;
     struct myArray *array=NULL;
     struct nMap *nmap1=NULL, *nmap2=NULL;
     struct myArray *array2=NULL;
     struct bucket_array* buckets_table;
     struct psum* psum_table;
     struct arrayBucketChain* arrayBctChn=NULL;
+    struct nMapArray arrayN;
     struct queries* queries;
     struct result_buffer* resultsnm;
     int32_t* ordered_array;
     FILE* query_file;
-
+    char str[80];
     long lSize;
+    FILE *fptr;
+
+   fptr = fopen("output_for_testing.txt", "w");
 
   // if ( (argc!=5) && (argc!=3) ){
   //    printf("Number of arguments is wrong!!!\n");
@@ -38,19 +42,64 @@ int main (int argc, char* argv[]){
   //  }
 
 
-size_t size;
+  size_t size;
 
-char buf[1000];
+  char buf[1000];
+  
 
 
+  arrayN.nCount=14;
+  for (i=0 ; i<arrayN.nCount ; i++){
+    arrayN.nMap=malloc(arrayN.nCount * sizeof(struct nMap));
+  }
+  // for(i=0; i<arrayN.nCount ; i++){
+  //   arrayN.nMap[i]=NULL;
+  // }
+ 
+  while (scanf("%s", buf)){
+        
+        
+        if(strcmp(buf, "Done") == 0){
+          fprintf(fptr, "Done\n");
+                break;
+        }
+        
+        if (ncnt<arrayN.nCount){
+            fprintf(fptr, "path: %s\n", buf);
+            fp=fopen(buf,"rb");
+            
+            if(fp==NULL)
+              {
+                  
+                fprintf(fptr,"%s File NOT FOUND!\n", buf);
+                //exit(1);
+              }
+              else{
+                fprintf(fptr, "path: %s opened\n", buf);
+              }
 
-while (scanf("%s", buf)){
-printf("Harness: %s\n", buf);
-    if(strcmp(buf, "Done") == 0){
-            break;
+            arrayN.nMap[ncnt]=nmapCreate(fp);
+            fclose(fp);
+            ncnt=ncnt+1;
+            strcpy(str, "");
+        }else{
+          fprintf(fptr, "ooops");
+          //realloc
+        }
+  }
+  fprintf(fptr,"harness: %s %d\n", buf, ncnt);
+
+
+  while (scanf("%s", buf)){
+    if(strcmp(buf, "F") == 0){
+      fprintf(fptr,"F boy\n");
+      break;
     }
-}
-printf("harness: %s\n", buf);
+    else{
+      fprintf(fptr,"HARn query: %s\n", buf);
+
+    }
+  }
 
 
     srand(time(0));
