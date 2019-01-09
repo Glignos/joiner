@@ -7,6 +7,7 @@
 #include "query_parser.h"
 #include "nmap.h"
 #include "process_query.h"
+#include <unistd.h>
 
 
 
@@ -35,6 +36,22 @@ int main (int argc, char* argv[]){
   //    printf("Number of arguments is wrong!!!\n");
   //    return 1;
   //  }
+
+
+size_t size;
+
+char buf[1000];
+
+
+
+while (scanf("%s", buf)){
+printf("Harness: %s\n", buf);
+    if(strcmp(buf, "Done") == 0){
+            break;
+    }
+}
+printf("harness: %s\n", buf);
+
 
     srand(time(0));
     printf("Reading file \n");
