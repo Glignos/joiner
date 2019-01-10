@@ -90,7 +90,7 @@ int main (int argc, char* argv[]){
   fprintf(fptr,"harness: %s %d\n", buf, ncnt);
 
 
-  while (scanf("%s", buf)){
+  while (scanf(" %[^\n]", buf) != EOF){
     if(strcmp(buf, "F") == 0){
       fprintf(fptr,"F boy\n");
       break;
@@ -98,6 +98,10 @@ int main (int argc, char* argv[]){
     else{
       fprintf(fptr,"HARn query: %s\n", buf);
 
+    }
+    if(strcmp(buf, "\0") == 0){
+      fprintf(fptr,"F boy\n");
+      break;
     }
   }
 

@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../../include/Parser.hpp
+cstdint
+-
+functional
+-
+string
+-
+vector
+-
+Relation.hpp
+../../include/Relation.hpp
+
+../../include/Relation.hpp
+cstdint
+-
+string
+-
+vector
+-
+
+../../include/Utils.hpp
+fstream
+-
+Relation.hpp
+../../include/Relation.hpp
+
+/home/andreas/Documents/Project1/joiner/submission/Query2SQL.cpp
+iostream
+-
+Relation.hpp
+/home/andreas/Documents/Project1/joiner/submission/Relation.hpp
+Utils.hpp
+/home/andreas/Documents/Project1/joiner/submission/Utils.hpp
+Parser.hpp
+/home/andreas/Documents/Project1/joiner/submission/Parser.hpp
+
