@@ -12,6 +12,11 @@ struct nMap{
 
 };
 
+struct nMapArray{
+  struct nMap **nMap;
+  int nCount;
+};
+
 struct nColumns{
   uint64_t *tuples;
 };
