@@ -2,19 +2,11 @@
 
 static char comparison_types[] = {'=', '>', '<'};
 
-struct queries* parse_stream(FILE* query_stream){
-    char buff[255];
+struct queries* parse_stream(char* buff, struct queries* queries){
     int items_read, table_or_int, i;
     struct query* query;
     struct queries* queries;
-
-    queries = malloc(sizeof(struct queries));
-    queries->number_of_queries = -1;
-    queries->size = 50;
-    queries->query_array = malloc(50 * sizeof(struct query));
-    do{
     //printf("reading a line \n");
-    fgets(buff, 255, (FILE*)query_stream);
 
     if(buff[0] != 'F'){
             //query initialization
@@ -37,9 +29,6 @@ struct queries* parse_stream(FILE* query_stream){
         query->sums_size = 10;
         query->sums_num = -1;
         //its quite big
-    }
-    else{
-        break; //if F stop
     }
     for(i=0;buff[i] != NULL; i++){
         table_or_int = 0;
@@ -105,7 +94,7 @@ struct queries* parse_stream(FILE* query_stream){
             //printf("got comparison column %d \n", table_or_int);
             query->comparisons[query->comparisons_num].table_pair_1.column = table_or_int; //convert to int
             i++;//now we get the symbol
-            for(int w=0;w<3;w++){
+            for(int w=0;w<3;w++){//fixme add more types of operators and scan an extra char incase of double
                 if(comparison_types[w] == buff[i]){//maybe use a switch case should be faster
                     query->comparisons[query->comparisons_num].comparison_type = w;
                 }
@@ -183,7 +172,6 @@ struct queries* parse_stream(FILE* query_stream){
 
 
     //printf(" %s \n", buff);
-    }while(buff[0] != 'F');
     //printf("End of stream \n");
     return queries;
 }

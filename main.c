@@ -45,7 +45,11 @@ int main (int argc, char* argv[]){
   size_t size;
 
   char buf[1000];
-  
+  //query struct initialization
+  queries = malloc(sizeof(struct queries));
+  queries->number_of_queries = -1;
+  queries->size = 50;
+  queries->query_array = malloc(50 * sizeof(struct query));
 
 
   arrayN.nCount=14;
@@ -105,10 +109,12 @@ int main (int argc, char* argv[]){
     }
     else{
       fprintf(fptr,"HARn query: %s\n", buf);
+      queries = parse_stream(buf,queries);
       printf ("query: %s\n", buf);
 
     }
-   
+    
+   run_queries(arrayN,queries,)
   }
 
 

@@ -98,7 +98,7 @@ struct arrayBucketChain* createBucketChainArray(struct bucket_array* bucket_tabl
   return arrayBcktChn;
 }
 
-struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct arrayBucketChain* arrayBctChn, int array_size, struct nColumns array_to_search){
+struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct arrayBucketChain* arrayBctChn, int array_size, struct nColumns array_to_search, int operation_type){
     int32_t value_of_hash;
     struct bucket* bucket_to_search;
     int value_of_prime_hash, number_of_matches_per_buffer, chain_value;//chain value is the pointer to bucket
@@ -123,6 +123,8 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
 
       while(chain_value != -1){
           if(bucket_to_search->rows[chain_value].data == array_to_search.tuples[i]){//check if value from prime hash exists in bucket
+            //fixme we need to add more cases for matches
+            //potentially besides == we need to do a scan ignoring the buckets since we dont have something ordered to utilise
             if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
                   results->next_result_buffer = malloc(sizeof(struct result_buffer));
                   results->next_result_buffer = results->total_results;

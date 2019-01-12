@@ -34,6 +34,6 @@ struct queries{
     int number_of_queries;
 };
 
-struct queries* parse_stream(FILE* );
+struct queries* parse_stream(char*, struct queries*);
 
 #endif

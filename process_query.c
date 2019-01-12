@@ -1,6 +1,17 @@
 #include "process_query.h"
-
-
+/*
+struct table* create_temp_tables(struct nMapArray* map_array){
+    struct table* tables;
+    tables = malloc(sizeof(struct table));
+    for(int i=0;i<map_array->nCount;i++){
+        tables[i].num = map_array->nCount;
+        tables[i].columns = malloc((map_array->nMap[i]->numColumns)*sizeof(struct column));
+    }
+    for(int i=0;i<4;i++){//fixme propably fucked up operators can be combinations
+        tabl
+    }
+}
+*/
 void free_generated_table(struct generated_table* generated_table){
     //should be managed beforehand free_nMap(generated_table->table_pointer);
     free(generated_table->tables_used);
@@ -123,7 +134,7 @@ void update_generated_table_mapping(struct generated_tables* generated_tables, s
 
 
 
-void run_query(struct nMap* tables, struct query query, struct table* temp_tables){
+void run_query(struct nMapArray* tables, struct query query, struct table* temp_tables){
     struct nMap* table1;
     struct nMap* table2;
     struct nMap* newTable;
