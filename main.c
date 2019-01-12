@@ -22,13 +22,8 @@ int main (int argc, char* argv[]){
     struct myArray *array=NULL;
     struct nMap *nmap1=NULL, *nmap2=NULL;
     struct myArray *array2=NULL;
-    struct bucket_array* buckets_table;
-    struct psum* psum_table;
-    struct arrayBucketChain* arrayBctChn=NULL;
     struct nMapArray arrayN;
     struct queries* queries;
-    struct result_buffer* resultsnm;
-    int32_t* ordered_array;
     FILE* query_file;
     char str[80];
     long lSize;
@@ -114,7 +109,7 @@ int main (int argc, char* argv[]){
 
     }
     
-   run_queries(arrayN,queries,)
+   run_queries(&arrayN,queries);
   }
 
 

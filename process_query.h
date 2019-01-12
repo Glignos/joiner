@@ -42,7 +42,7 @@ void join_tables_used(struct generated_table*, struct generated_table*);
 
 void free_generated_table(struct generated_table*);
 
-void run_queries(struct nMap*, struct queries*, struct table*);
+void run_queries(struct nMapArray*, struct queries*);
 
 void run_query(struct nMapArray*, struct query, struct table*);
 
@@ -55,4 +55,6 @@ void crossjoin_tables(struct generated_table*, struct generated_table*);
 struct nMap* create_table_from_matches(struct result_buffer*, struct nMap*, struct nMap*);
 
 struct table* create_temp_tables(struct nMapArray*);
+
+void run_radix();
 #endif

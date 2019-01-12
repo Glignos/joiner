@@ -134,7 +134,7 @@ void update_generated_table_mapping(struct generated_tables* generated_tables, s
 
 
 
-void run_query(struct nMapArray* tables, struct query query, struct table* temp_tables){
+void run_query(struct nMapArray* tables, struct query query){
     struct nMap* table1;
     struct nMap* table2;
     struct nMap* newTable;
@@ -156,6 +156,10 @@ void run_query(struct nMapArray* tables, struct query query, struct table* temp_
         newTable = NULL;
         table1_replaced = -1;
         table2_replaced = -1;
+        table1_pointer = tables->nMap[query.comparisons[i].table_pair_1.table];
+        if(query.comparisons[i].number != NULL){
+            table2_pointer = tables->nMap[query.comparisons[i].table_pair_2.table];
+        }
         //load table 1 pointer
         //load table 2 pointer
         if(i>0){
@@ -176,13 +180,15 @@ void run_query(struct nMapArray* tables, struct query query, struct table* temp_
                 }
             }
         } //fix lookup on same array
+        /*
         if(query.comparisons[i].number == NULL && table1_replaced == -1 && table2_replaced == -1){
         newTable = check_temps(query.comparisons[i], temp_tables);// check if this query has run before
-        }
+        }*/
+        /*
         if(newTable != NULL){
             //use newtable for the result
             //load it in the produced tables** table1 table2 and newTable
-        }
+        }*/
         else{
 
             //
@@ -198,10 +204,55 @@ void run_query(struct nMapArray* tables, struct query query, struct table* temp_
 }
 
 
-void run_queries(struct nMap* tables, struct queries* queries, struct table* temp_tables){
+void run_queries(struct nMap* tables, struct queries* queries){
     for(int i=0;i<=queries->number_of_queries;i++){
-        run_query(tables,queries->query_array[i],temp_tables);
+        run_query(tables,queries->query_array[i]);
     }
 }
 
 
+void run_radix(nMap* nmap1, nMap* nmap2){
+    struct bucket_array* buckets_table;
+    struct psum* psum_table;
+    int32_t* ordered_array;
+    struct arrayBucketChain* arrayBctChn=NULL;
+    struct result_buffer* resultsnm;
+
+    buckets_table = hash_data_array(array);
+    psum_table = create_psum_table(buckets_table);
+    ordered_array = create_ordered_data_array(r, psum_table, buckets_table);
+
+
+     //for(i=0; i<r; i++){
+    //   printf("RowId: %d , Value: %d\n", array->tuples[i].rowId, array->tuples[i].value );
+     //}
+
+    arrayBctChn=createBucketChainArray(buckets_table);
+    buckets_table = hash_data_array(nmap1->ncolumns[2], nmap1->numTuples);
+    psum_table = create_psum_table(buckets_table);
+    arrayBctChn=createBucketChainArray(buckets_table);
+    resultsnm=match_arrays(buckets_table, arrayBctChn, nmap2->numTuples, nmap2->ncolumns[1]); 
+
+
+    // for (i=0; i<nmap1->numColumns; i++){
+    //   free(nmap1->ncolumns[i].tuples);
+    // }
+    // free(nmap1->ncolumns);
+    // for (i=0; i<nmap2->numColumns; i++){
+    // //   free(nmap2->ncolumns[i].tuples);
+    // // }
+    // free(nmap2->ncolumns);
+
+    //free(array->tuples);
+  //   for(i=0; i<buckets_table->num_of_buckets; i++){
+  //     free(arrayBctChn[i].bucket);
+  //     free(arrayBctChn[i].chain);
+  //     free(buckets_table->buckets[i].rows);
+  //   }
+  //   free(buckets_table->buckets);
+  //   free(buckets_table);
+  //   free(arrayBctChn);
+  //   //free(ordered_array);
+  //   free(psum_table->sums);
+  //   free(psum_table);
+}
