@@ -57,7 +57,6 @@ int main (int argc, char* argv[]){
  
   while (scanf("%s", buf)){
         
-        
         if(strcmp(buf, "Done") == 0){
           fprintf(fptr, "Done\n");
                 break;
@@ -99,6 +98,7 @@ int main (int argc, char* argv[]){
     if(strcmp(buf, "F") == 0){
       qcount=qcount+1;
       fprintf(fptr,"F boy %d\n");
+      printf("running query\n");
       run_queries(&arrayN,queries);
       break;
     }
@@ -108,12 +108,12 @@ int main (int argc, char* argv[]){
       printf ("query: %s\n", buf);
 
     }
-    }
+  }
 
 
 
 
-
+/*
     srand(time(0));
     fprintf(fptr, "Reading file \n");
     fprintf(fptr,"Parsed \n");
@@ -131,7 +131,7 @@ int main (int argc, char* argv[]){
             fprintf(fptr, "Sum no %d on table %d and column %d \n",y ,queries->query_array[i].sums[y].table ,queries->query_array[i].sums[y].column);
         }
         fprintf(fptr, "|||||||||||\n");
-    }
+    }*/
 
 
   //   printf( "Ente size for R :");

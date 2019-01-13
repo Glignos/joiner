@@ -12,7 +12,7 @@ struct table* create_temp_tables(struct nMapArray* map_array){
     }
 }
 */
-static fptr;
+static FILE* fptr;
 void free_generated_table(struct generated_table* generated_table){
     //should be managed beforehand free_nMap(generated_table->table_pointer);
     free(generated_table->tables_used);
@@ -22,6 +22,7 @@ void free_generated_table(struct generated_table* generated_table){
 
 void join_tables_used(struct generated_table* table1, struct generated_table* table2){
     fprintf(fptr,"join tables used \n");
+    printf("Joining tables\n");
     for(int i=0;i<table2->num_of_tables; i++){
         table1->tables_used[table1->num_of_tables] = table2->tables_used[i];
         table1->columns_per_table[table1->num_of_tables] = table2->columns_per_table[i];
@@ -31,7 +32,7 @@ void join_tables_used(struct generated_table* table1, struct generated_table* ta
 }
 
 void crossjoin_tables(struct generated_table* table1, struct generated_table* table2){ //free second pointer move crossjoined table to first one
-    fprintf(fptr,"crossjoining tables \n");
+    printf("crossjoining tables \n");
     struct nMap* newTable = malloc(sizeof(struct nMap));
     int new_num_of_columns = table1->table_pointer->numColumns+table2->table_pointer->numColumns;
     int new_num_of_tuples = table1->table_pointer->numTuples*table2->table_pointer->numTuples;
@@ -39,7 +40,7 @@ void crossjoin_tables(struct generated_table* table1, struct generated_table* ta
     for(int i=0;i<new_num_of_columns;i++){
     newTable->ncolumns[i].tuples = malloc(sizeof(struct nColumns)*(new_num_of_tuples));
     }
-    for(int b=0; b<new_num_of_tuples; b+table2->table_pointer->numTuples){//fixme use columns to copy elements faster
+    for(int b=0; b<new_num_of_tuples; b = b+(table2->table_pointer->numTuples)){//fixme use columns to copy elements faster
         for(int x=0;x<table2->table_pointer->numTuples;x++){
             for(int w=0; w<table1->table_pointer->numColumns; w++){
                 newTable->ncolumns[w].tuples[b+x] = table1->table_pointer->ncolumns[w].tuples[b/table2->table_pointer->numTuples];
@@ -57,7 +58,7 @@ void crossjoin_tables(struct generated_table* table1, struct generated_table* ta
 }
 
 struct nMap* create_table_from_matches(struct result_buffer* result_buffer, struct nMap* table1, struct nMap* table2){
-    fprintf(fptr,"create table from matches buffer \n");
+    printf("create table from matches buffer \n");
     struct nMap* newTable = malloc(sizeof(struct nMap));
     int new_num_of_columns = table1->numColumns+table2->numColumns;
     int new_num_of_tuples = result_buffer->counter;
@@ -79,6 +80,7 @@ struct nMap* create_table_from_matches(struct result_buffer* result_buffer, stru
         }
         
     }
+    return newTable;
 }
 
 
@@ -92,9 +94,19 @@ struct nMap* check_temps(struct comparison comparison, struct table* tables){
 }
 
 
-void update_generated_table_mapping(struct generated_tables* generated_tables, struct comparison comparison,int table1_replaced, int table2_replaced, struct nMap* newTable){
-    fprintf(fptr,"update generated_table_mapping");
-    if(table1_replaced == table2_replaced){
+void update_generated_table_mapping(struct generated_tables* generated_tables, struct query query,int table1_replaced, int table2_replaced, struct nMap* newTable, int query_num){
+    printf("update generated_table_mapping");
+    if(table1_replaced == -1 && table2_replaced == -1){
+        generated_tables->tables[generated_tables->total_tables].table_pointer = newTable;
+        generated_tables->tables[generated_tables->total_tables].tables_used[0] = query.table_ids_array[query.comparisons[query_num].table_pair_1.table];
+        generated_tables->tables[generated_tables->total_tables].num_of_tables++;
+        if(query.comparisons[query_num].number == NULL){
+        generated_tables->tables[generated_tables->total_tables].tables_used[1] = query.table_ids_array[query.comparisons[query_num].table_pair_2.table];;
+        generated_tables->tables[generated_tables->total_tables].num_of_tables++;
+        }
+        generated_tables->tables[generated_tables->total_tables].columns_per_table;//fere ta columns apo tous pragmatikous pinakes
+    }
+    else if(table1_replaced == table2_replaced){
         free_nMap(generated_tables->tables[table1_replaced].table_pointer);
         generated_tables->tables[table1_replaced].table_pointer = newTable;
     }
@@ -115,10 +127,10 @@ void update_generated_table_mapping(struct generated_tables* generated_tables, s
             //free previous
             free_nMap(generated_tables->tables[table1_replaced].table_pointer);
             generated_tables->tables[table1_replaced].table_pointer = newTable;
-            if(comparison.number == NULL){//if we used a number no additional table is used
+            if(query.comparisons[query_num].number == NULL){//if we used a number no additional table is used
             generated_tables->tables[table1_replaced].num_of_tables++;
-            generated_tables->tables[table1_replaced].tables_used[generated_tables->tables[table1_replaced].num_of_tables - 1] = comparison.table_pair_2.table;
-            generated_tables->tables[table1_replaced].columns_per_table[generated_tables->tables[table1_replaced].num_of_tables - 1] = newTable->numColumns;
+            generated_tables->tables[table1_replaced].tables_used[generated_tables->tables[table1_replaced].num_of_tables - 1] = query.table_ids_array[query.comparisons[query_num].table_pair_2.table];
+            generated_tables->tables[table1_replaced].columns_per_table[generated_tables->tables[table1_replaced].num_of_tables - 1] = newTable->numColumns;//fixme what the fuck are you doing? prepei na ferw ta columns apo tous pragmatikous pinakes
             }
         }
         else if(table2_replaced){
@@ -126,7 +138,7 @@ void update_generated_table_mapping(struct generated_tables* generated_tables, s
             free_nMap(generated_tables->tables[table2_replaced].table_pointer);//free previous generated table
             generated_tables->tables[table2_replaced].table_pointer = newTable;//assign new
             generated_tables->tables[table2_replaced].num_of_tables++;
-            generated_tables->tables[table2_replaced].tables_used[generated_tables->tables[table2_replaced].num_of_tables - 1] = comparison.table_pair_1.table;//replace and add new table to the tables used to produce the current one
+            generated_tables->tables[table2_replaced].tables_used[generated_tables->tables[table2_replaced].num_of_tables - 1] = query.table_ids_array[query.comparisons[query_num].table_pair_1.table];//replace and add new table to the tables used to produce the current one fixme why is -1
             generated_tables->tables[table2_replaced].columns_per_table[generated_tables->tables[table2_replaced].num_of_tables - 1] = newTable->numColumns;
         }
 }
@@ -141,8 +153,6 @@ void update_generated_table_mapping(struct generated_tables* generated_tables, s
 
 
 void run_query(struct nMapArray* tables, struct query query){
-    struct nMap* table1;
-    struct nMap* table2;
     struct nMap* newTable;
     struct generated_tables* generated_tables;
     int table1_replaced, table2_replaced;
@@ -152,7 +162,7 @@ void run_query(struct nMapArray* tables, struct query query){
     generated_tables = malloc(sizeof(struct generated_tables));
     generated_tables->tables = malloc(query.comparisons_num*sizeof(struct generated_table));//move the allocation to the main to avoid losing time at allocating memory preallocate big enough number and check at this point if its enough for this query
     for(int y=0; y< query.comparisons_num;y++){
-        //generated_tables->tables[y].tables_used = malloc(tables->total_tables*sizeof(int));//fixme multiply with the total amount of tables
+        generated_tables->tables[y].tables_used = malloc(tables->nCount*sizeof(int));//fixme multiply with the total amount of tables
         generated_tables->tables[y].num_of_tables = 0;
 
     }
@@ -164,9 +174,9 @@ void run_query(struct nMapArray* tables, struct query query){
         newTable = NULL;
         table1_replaced = -1;
         table2_replaced = -1;
-        table1_pointer = tables->nMap[query.comparisons[i].table_pair_1.table];
+        table1_pointer = tables->nMap[query.table_ids_array[query.comparisons[i].table_pair_1.table]];
         if(query.comparisons[i].number != NULL){
-            table2_pointer = tables->nMap[query.comparisons[i].table_pair_2.table];
+            table2_pointer = tables->nMap[query.table_ids_array[query.comparisons[i].table_pair_2.table]];
         }
         //load table 1 pointer
         //load table 2 pointer
@@ -174,13 +184,13 @@ void run_query(struct nMapArray* tables, struct query query){
             fprintf(fptr,"checking generated tables \n");
             for(int y=0; y<generated_tables->total_tables; y++){
                 for(int z=0; z<generated_tables->tables[y].num_of_tables; z++){
-                    if(generated_tables->tables[y].tables_used[z] == query.comparisons[i].table_pair_1.table)//check if table has been used in a previous subquery
+                    if(generated_tables->tables[y].tables_used[z] == query.table_ids_array[query.comparisons[i].table_pair_1.table])//check if table has been used in a previous subquery
                         {
                             //replace table 1 pointer
                             table1_pointer = generated_tables->tables[y].table_pointer;
                             table1_replaced = y;
                         }
-                    if(query.comparisons[i].number == NULL && generated_tables->tables[y].tables_used[z] == query.comparisons[i].table_pair_2.table) //check if table has been used in a previous subquery
+                    if(query.comparisons[i].number == NULL && generated_tables->tables[y].tables_used[z] == query.table_ids_array[query.comparisons[i].table_pair_2.table]) //check if table has been used in a previous subquery
                         {
                             //replace table 2 pointer
                             table2_pointer = generated_tables->tables[y].table_pointer; //fixme
@@ -229,7 +239,9 @@ void run_queries(struct nMapArray* tables, struct queries* queries){
     fptr = fopen("output_for_testing.txt", "w");
     for(int i=0;i<=queries->number_of_queries;i++){
         fprintf(fptr,"run query \n");
+        printf("Going for it\n");
         run_query(tables,queries->query_array[i]);
+        printf("im not useless\n");
     }
 }
 
@@ -245,11 +257,14 @@ struct result_buffer* run_radix(struct nMap* nmap1, struct nMap* nmap2, int colu
      //for(i=0; i<r; i++){
     //   printf("RowId: %d , Value: %d\n", array->tuples[i].rowId, array->tuples[i].value );
      //}
-
-    arrayBctChn=createBucketChainArray(buckets_table);
     buckets_table = hash_data_array(nmap1->ncolumns[column_1], nmap1->numTuples);
+    printf("Created buckets\n");
+    arrayBctChn=createBucketChainArray(buckets_table);
+    printf("created array bucket chain \n");
     psum_table = create_psum_table(buckets_table);
+    printf("created psum \n");
     resultsnm=match_arrays(buckets_table, arrayBctChn, nmap2->numTuples, nmap2->ncolumns[column_2]); 
+    printf("Created results \n");
     //fixme memory free result after creating newtable
     return resultsnm;
 

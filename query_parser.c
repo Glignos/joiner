@@ -29,6 +29,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
         query->sums_num = -1;
         //its quite big
     }
+    printf("preparing query\n");
     for(i=0;buff[i] != NULL; i++){
         table_or_int = 0;
         if(buff[i] == '|'){//initial loop to get arrays used
@@ -171,6 +172,6 @@ struct queries* parse_stream(char* buff, struct queries* queries){
 
 
     //printf(" %s \n", buff);
-    //printf("End of stream \n");
+    printf("End of stream \n");
     return queries;
 }
