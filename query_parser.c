@@ -5,7 +5,6 @@ static char comparison_types[] = {'=', '>', '<'};
 struct queries* parse_stream(char* buff, struct queries* queries){
     int items_read, table_or_int, i;
     struct query* query;
-    struct queries* queries;
     //printf("reading a line \n");
 
     if(buff[0] != 'F'){

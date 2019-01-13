@@ -44,7 +44,7 @@ void free_generated_table(struct generated_table*);
 
 void run_queries(struct nMapArray*, struct queries*);
 
-void run_query(struct nMapArray*, struct query, struct table*);
+void run_query(struct nMapArray*, struct query);
 
 void update_generated_table_mapping(struct generated_tables*, struct comparison, int, int,struct nMap*);
 
