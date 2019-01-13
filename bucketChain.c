@@ -98,7 +98,7 @@ struct arrayBucketChain* createBucketChainArray(struct bucket_array* bucket_tabl
   return arrayBcktChn;
 }
 
-struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct arrayBucketChain* arrayBctChn, int array_size, struct nColumns array_to_search, int operation_type){
+struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct arrayBucketChain* arrayBctChn, int array_size, struct nColumns array_to_search){
     int32_t value_of_hash;
     struct bucket* bucket_to_search;
     int value_of_prime_hash, number_of_matches_per_buffer, chain_value;//chain value is the pointer to bucket

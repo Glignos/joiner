@@ -56,5 +56,5 @@ struct nMap* create_table_from_matches(struct result_buffer*, struct nMap*, stru
 
 struct table* create_temp_tables(struct nMapArray*);
 
-void run_radix();
+struct result_buffer* run_radix();
 #endif

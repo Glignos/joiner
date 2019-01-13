@@ -30,4 +30,5 @@ int *chainCreate(int R);
 struct arrayBucketChain* createBucketChainArray(struct bucket_array* bucket_table );
 
 struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct arrayBucketChain* arrayBctChn, int array_size, struct nColumns array_to_search);
+
 #endif

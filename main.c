@@ -99,7 +99,7 @@ int main (int argc, char* argv[]){
     if(strcmp(buf, "F") == 0){
       qcount=qcount+1;
       fprintf(fptr,"F boy %d\n");
-      
+      run_queries(&arrayN,queries);
       break;
     }
     else{
@@ -108,9 +108,7 @@ int main (int argc, char* argv[]){
       printf ("query: %s\n", buf);
 
     }
-    
-   run_queries(&arrayN,queries);
-  }
+    }
 
 
 
@@ -118,8 +116,6 @@ int main (int argc, char* argv[]){
 
     srand(time(0));
     fprintf(fptr, "Reading file \n");
-    query_file = fopen("small.work", "r");
-    queries = parse_stream(query_file);
     fprintf(fptr,"Parsed \n");
     for(int i=0;i<=queries->number_of_queries;i++){
         fprintf(fptr, "Query no %d \n",i);
