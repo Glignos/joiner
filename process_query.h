@@ -46,7 +46,7 @@ void run_queries(struct nMapArray*, struct queries*);
 
 void run_query(struct nMapArray*, struct query);
 
-void update_generated_table_mapping(struct generated_tables*, struct comparison, int, int,struct nMap*);
+void update_generated_table_mapping(struct generated_tables*, struct query, int, int,struct nMap*, int );
 
 struct nMap* check_temps(struct comparison, struct table*);
 
