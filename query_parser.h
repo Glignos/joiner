@@ -3,6 +3,7 @@
 #include  <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "bucketChain.h"
 
 struct table_n_column{
     int table;
