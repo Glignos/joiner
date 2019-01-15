@@ -175,3 +175,16 @@ struct queries* parse_stream(char* buff, struct queries* queries){
     printf("End of stream \n");
     return queries;
 }
+
+
+struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, char* operator, int* number){
+    
+    if ((number!=NULL) && (data_array2==NULL)){
+        printf("Case number: %d\n", number);
+    }
+    else{
+        printf("Case arrays\n");
+    }
+
+    return NULL;
+}
