@@ -37,4 +37,8 @@ struct queries{
 
 struct queries* parse_stream(char*, struct queries*);
 
+struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data_array2,  uint64_t numTuples1);
+
+struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, char* operator, int* number,  uint64_t numTuples1,  uint64_t numTuples2);
+
 #endif

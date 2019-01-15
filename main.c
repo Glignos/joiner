@@ -208,7 +208,7 @@ int main (int argc, char* argv[]){
 
    //resultsnm=match_arrays(buckets_table, arrayBctChn, nmap2->numTuples, nmap2->ncolumns[1]); 
 
-    resultsnm=search(arrayN.nMap[0], arrayN.nMap[1],  ">", NULL); 
+    //resultsnm=search(arrayN.nMap[0], arrayN.nMap[1],  ">", NULL); 
 
     // for (i=0; i<nmap1->numColumns; i++){
     //   free(nmap1->ncolumns[i].tuples);
