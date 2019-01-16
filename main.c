@@ -24,6 +24,7 @@ int main (int argc, char* argv[]){
     struct myArray *array2=NULL;
     struct nMapArray arrayN;
     struct queries* queries;
+    struct result_buffer* resultsnm;
     FILE* query_file;
     char str[80];
     long lSize;
@@ -205,8 +206,9 @@ int main (int argc, char* argv[]){
     // 	}
     //   nmap2=nmapCreate(fp);
 
-    // resultsnm=match_arrays(buckets_table, arrayBctChn, nmap2->numTuples, nmap2->ncolumns[1]); 
+   //resultsnm=match_arrays(buckets_table, arrayBctChn, nmap2->numTuples, nmap2->ncolumns[1]); 
 
+    //resultsnm=search(arrayN.nMap[0], arrayN.nMap[1],  ">", NULL); 
 
     // for (i=0; i<nmap1->numColumns; i++){
     //   free(nmap1->ncolumns[i].tuples);

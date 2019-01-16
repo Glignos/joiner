@@ -175,3 +175,147 @@ struct queries* parse_stream(char* buff, struct queries* queries){
     printf("End of stream \n");
     return queries;
 }
+
+
+struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, char* operator, int* number,  uint64_t numTuples1,  uint64_t numTuples2){
+    
+    int number_of_matches_per_buffer, chain_value, i=0, j=0;//chain value is the pointer to bucket
+    struct result_buffer* initial_buffer;
+    struct result_buffer* results;
+    number_of_matches_per_buffer = (((1024*1024) - sizeof(struct matches*) - sizeof(struct result_buffer*)) -3*sizeof(int) / sizeof(struct matches));
+    initial_buffer = malloc(sizeof(struct result_buffer));
+    initial_buffer->counter = 0;
+    initial_buffer->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
+    initial_buffer->next_result_buffer = NULL;
+    results = initial_buffer;
+    initial_buffer->number_of_matches_per_buffer = number_of_matches_per_buffer;
+    initial_buffer->total_results=0;
+
+
+    if ((number!=NULL) && (data_array2==NULL)){
+        printf("Case number: %d\n", number);
+        for (i=0; i<numTuples1; i++){
+            
+                if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
+                  printf("reallocating\n");
+                  results->next_result_buffer = malloc(sizeof(struct result_buffer));
+                  results->next_result_buffer->total_results = (int)results->total_results;
+                  results = results->next_result_buffer;
+                  results->counter = 0;
+                  results->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
+                  results->next_result_buffer = NULL;
+                  results->number_of_matches_per_buffer = number_of_matches_per_buffer;
+                  printf("reallocated\n");
+                }
+                if (strcmp(operator,">")==0){
+                    if (data_array1->tuples[i]>number){
+                        results->matches[results->counter].row_id_1 = i;
+                        results->matches[results->counter].row_id_2 = number;
+                        results->counter++;
+                        results->total_results++;
+                    }
+                         
+                }
+                else if (strcmp(operator,"<")==0){ 
+                    if (data_array1->tuples[i]<number){
+                        results->matches[results->counter].row_id_1 = i;
+                        results->matches[results->counter].row_id_2 = number;
+                        results->counter++;
+                        results->total_results++;
+                    }
+                           
+                }
+
+            
+        }
+    }
+    else{
+        printf("Case arrays %s\n", operator);
+        for (i=0; i<numTuples1; i++){
+            for(j=0; j<numTuples2; j++){
+                if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
+                  printf("reallocating\n");
+                  results->next_result_buffer = malloc(sizeof(struct result_buffer));
+                  results->next_result_buffer->total_results = (int)results->total_results;
+                  results = results->next_result_buffer;
+                  results->counter = 0;
+                  results->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
+                  results->next_result_buffer = NULL;
+                  results->number_of_matches_per_buffer = number_of_matches_per_buffer;
+                  printf("reallocated\n");
+                }
+                if (strcmp(operator,">")==0){
+                    if (data_array1->tuples[i]>data_array2->tuples[j]){
+                        results->matches[results->counter].row_id_1 = i;
+                        results->matches[results->counter].row_id_2 = j;
+                        results->counter++;
+                        results->total_results++;
+                    }
+                         
+                }
+                else if (strcmp(operator,"<")==0){
+                    if (data_array1->tuples[i]<data_array2->tuples[j]){
+                        results->matches[results->counter].row_id_1 = i;
+                        results->matches[results->counter].row_id_2 = j;
+                        results->counter++;
+                        results->total_results++;
+                    }
+                           
+                }
+
+            }
+        }
+    }
+
+    return initial_buffer;
+}
+
+struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data_array2,  uint64_t numTuples1){
+    
+    int number_of_matches_per_buffer, chain_value, i=0, j=0;//chain value is the pointer to bucket
+    struct result_buffer* initial_buffer;
+    struct result_buffer* results;
+    number_of_matches_per_buffer = (((1024*1024) - sizeof(struct matches*) - sizeof(struct result_buffer*)) -3*sizeof(int) / sizeof(struct matches));
+    initial_buffer = malloc(sizeof(struct result_buffer));
+    initial_buffer->counter = 0;
+    initial_buffer->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
+    initial_buffer->next_result_buffer = NULL;
+    results = initial_buffer;
+    initial_buffer->number_of_matches_per_buffer = number_of_matches_per_buffer;
+    initial_buffer->total_results=0;
+
+
+    
+        
+        for (i=0; i<numTuples1; i++){
+            
+                if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
+                  printf("reallocating\n");
+                  results->next_result_buffer = malloc(sizeof(struct result_buffer));
+                  results->next_result_buffer->total_results = (int)results->total_results;
+                  results = results->next_result_buffer;
+                  results->counter = 0;
+                  results->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
+                  results->next_result_buffer = NULL;
+                  results->number_of_matches_per_buffer = number_of_matches_per_buffer;
+                  printf("reallocated\n");
+                }
+                
+                    if (data_array1->tuples[i]=data_array2->tuples[i]){
+                        results->matches[results->counter].row_id_1 = i;
+                        results->matches[results->counter].row_id_2 = i;
+                        results->counter++;
+                        results->total_results++;
+                    }
+                         
+                
+
+
+            
+        }
+    
+    
+    
+
+    return initial_buffer;
+}
