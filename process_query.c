@@ -59,13 +59,18 @@ void crossjoin_tables(struct generated_table* table1, struct generated_table* ta
 
 struct nMap* create_table_from_matches(struct result_buffer* result_buffer, struct nMap* table1, struct nMap* table2){
     printf("create table from matches buffer \n");
+    if(result_buffer->total_results == 0){
+        return NULL;
+    }
     struct nMap* newTable = malloc(sizeof(struct nMap));
     int new_num_of_columns = table1->numColumns+table2->numColumns;
-    int new_num_of_tuples = result_buffer->counter;
+    int new_num_of_tuples = result_buffer->total_results;
     int results_from_buffer = 0;
+    printf("initialized\n");
+    newTable->ncolumns = malloc(sizeof(struct nColumns)*(new_num_of_tuples));
     for(int i=0;i<new_num_of_columns;i++){
-    newTable->ncolumns[i].tuples = malloc(sizeof(struct nColumns)*(new_num_of_tuples));
-    }
+        newTable->ncolumns[i].tuples = malloc(sizeof(uint64_t)*(new_num_of_tuples));
+    };
     for(int i=0; i<result_buffer->total_results;i++){
         for(int w=0;w<table1->numColumns;w++){
             newTable->ncolumns[w].tuples[i] =table1->ncolumns[w].tuples[result_buffer->matches[i%result_buffer->number_of_matches_per_buffer].row_id_1];
@@ -95,7 +100,7 @@ struct nMap* check_temps(struct comparison comparison, struct table* tables){
 
 
 void update_generated_table_mapping(struct generated_tables* generated_tables, struct query query,int table1_replaced, int table2_replaced, struct nMap* newTable, int subquery_num){
-    printf("update generated_table_mapping");
+    printf("update generated_table_mapping\n");
     if(table1_replaced == -1 && table2_replaced == -1){
         generated_tables->tables[generated_tables->total_tables].table_pointer = newTable;
         generated_tables->tables[generated_tables->total_tables].tables_used[0] = query.table_ids_array[query.comparisons[subquery_num].table_pair_1.table];
@@ -243,6 +248,7 @@ void run_queries(struct nMapArray* tables, struct queries* queries){
         run_query(tables,queries->query_array[i]);
         printf("im not useless\n");
     }
+    printf("queries num %d", queries->number_of_queries);
 }
 
 
