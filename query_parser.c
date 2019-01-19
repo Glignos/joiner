@@ -267,6 +267,10 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
         }
     }
 
+    if(initial_buffer->total_results==0){
+        return NULL;
+    }
+    
     return initial_buffer;
 }
 
@@ -332,7 +336,9 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
             
         }
     
-    
+    if(initial_buffer->total_results==0){
+        return NULL;
+    }
     
 
     return initial_buffer;
