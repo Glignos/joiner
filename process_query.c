@@ -294,7 +294,7 @@ void run_query(struct nMapArray *tables, struct query query)
         fprintf(fptr, "update table mappings \n");
         if (newTable == NULL)
         {
-            return NULL; // since its join if one is NUll all are NULL duh
+            //return NULL; // since its join if one is NUll all are NULL duh
         }
         update_generated_table_mapping(generated_tables, query, table1_replaced, table2_replaced, newTable, i, tables);
     }

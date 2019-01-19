@@ -31,7 +31,39 @@ int main (int argc, char* argv[]){
         printf("Tuple Value: %" PRIu64 "\n", nColumn1[1].tuples[i]);
     }
     
+    printf("Testing search for > expecting  nothing for a result\n");
 
+    struct result_buffer* resultsnm;
+    resultsnm=search(&nColumn1[0], &nColumn1[1], 1, NULL, 10, 10 );
+    
+    if (!resultsnm){
+    printf("Results number: 0\n");
+    }
+
+
+    printf("Testing search for < expecting  100 results\n");   
+    resultsnm=search(&nColumn1[0], &nColumn1[1], 2, NULL, 10, 10 );
+    if (!resultsnm){
+    printf("Results number: 0\n");
+    }else{
+    printf("Results number: %d\n", resultsnm->total_results);
+    }
+
+    printf("Testing search for >0 expecting  9 results\n"); 
+      
+    resultsnm=search(&nColumn1[0], NULL, 1, 0, 10, NULL );
+    if (!resultsnm){
+    printf("Results number: 0\n");
+    }else{
+    printf("Results number: %d\n", resultsnm->total_results);
+    }
+    printf("Testing search for <11 expecting  9 results\n");   
+    resultsnm=search(&nColumn1[0], NULL, 2, 11, 10, NULL );
+    if (!resultsnm){
+    printf("Results number: 0\n");
+    }else{
+       printf("Results number: %d\n", resultsnm->total_results);
+    }
     for(i=0; i<3; i++){
         free(nColumn1[i].tuples);
     }
