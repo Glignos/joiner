@@ -56,6 +56,8 @@ void crossjoin_tables(struct generated_table*, struct generated_table*);
 
 struct nMap* create_table_from_matches(struct result_buffer*, struct nMap*, struct nMap*);
 
+struct nMap *create_table_from_matches_filter(struct result_buffer*, struct nMap*);
+
 struct table* create_temp_tables(struct nMapArray*);
 
 struct result_buffer* run_radix(struct nColumns*, struct nColumns*, int, int);
