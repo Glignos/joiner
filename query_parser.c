@@ -319,3 +319,19 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
 
     return initial_buffer;
 }
+
+uint64_t* checksum(struct nColumns* data_array1, struct nColumns* data_array2, uint64_t numTuples1,  uint64_t numTuples2){
+
+    int i=0;
+    uint64_t r[2];
+
+    r[0]=0;
+    r[1]=0;
+
+    for (i=0; i<numTuples1; i++){
+        r[0]=data_array1->tuples[i]+r[0];
+        r[1]=data_array2->tuples[i]+r[1];
+    }
+
+    return r;
+}
