@@ -147,5 +147,8 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
           printf("got next chain value\n");
       }
     }
+    if(initial_buffer->total_results==0){
+        return NULL;
+    }
     return initial_buffer;//return first buffer
 }

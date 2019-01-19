@@ -31,6 +31,8 @@ struct generated_table{
     int* tables_used;
     int num_of_tables;
     int* columns_per_table;
+    int columns_list_size;
+    int columns_size;
 };
 
 struct generated_tables{
@@ -46,7 +48,7 @@ void run_queries(struct nMapArray*, struct queries*);
 
 void run_query(struct nMapArray*, struct query);
 
-void update_generated_table_mapping(struct generated_tables*, struct query, int, int,struct nMap*, int );
+void update_generated_table_mapping(struct generated_tables*, struct query, int, int,struct nMap*, int, struct nMapArray* );
 
 struct nMap* check_temps(struct comparison, struct table*);
 
