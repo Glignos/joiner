@@ -177,7 +177,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
 }
 
 
-struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, char* operator, int* number,  uint64_t numTuples1,  uint64_t numTuples2){
+struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, int operator, int* number,  uint64_t numTuples1,  uint64_t numTuples2){
     
     int number_of_matches_per_buffer, chain_value, i=0, j=0;//chain value is the pointer to bucket
     struct result_buffer* initial_buffer;
@@ -207,7 +207,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
                   results->number_of_matches_per_buffer = number_of_matches_per_buffer;
                   printf("reallocated\n");
                 }
-                if (strcmp(operator,">")==0){
+                if (operator==1){
                     if (data_array1->tuples[i]>number){
                         results->matches[results->counter].row_id_1 = i;
                         results->matches[results->counter].row_id_2 = number;
@@ -216,7 +216,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
                     }
                          
                 }
-                else if (strcmp(operator,"<")==0){ 
+                else if (operator==2){ 
                     if (data_array1->tuples[i]<number){
                         results->matches[results->counter].row_id_1 = i;
                         results->matches[results->counter].row_id_2 = number;
@@ -270,7 +270,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
     return initial_buffer;
 }
 
-struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data_array2,  uint64_t numTuples1){
+struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data_array2,  uint64_t numTuples1, int operator){
     
     int number_of_matches_per_buffer, chain_value, i=0, j=0;//chain value is the pointer to bucket
     struct result_buffer* initial_buffer;
@@ -300,13 +300,31 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
                   results->number_of_matches_per_buffer = number_of_matches_per_buffer;
                   printf("reallocated\n");
                 }
-                
+                if (operator==0){
                     if (data_array1->tuples[i]=data_array2->tuples[i]){
                         results->matches[results->counter].row_id_1 = i;
                         results->matches[results->counter].row_id_2 = i;
                         results->counter++;
                         results->total_results++;
                     }
+                }
+                else if(operator==1){
+                    if (data_array1->tuples[i]>data_array2->tuples[i]){
+                        results->matches[results->counter].row_id_1 = i;
+                        results->matches[results->counter].row_id_2 = i;
+                        results->counter++;
+                        results->total_results++;
+                    }
+
+                }
+                else if(operator==2){
+                    if (data_array1->tuples[i]<data_array2->tuples[i]){
+                        results->matches[results->counter].row_id_1 = i;
+                        results->matches[results->counter].row_id_2 = i;
+                        results->counter++;
+                        results->total_results++;
+                    }
+                }
                          
                 
 
@@ -318,4 +336,20 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
     
 
     return initial_buffer;
+}
+
+uint64_t* checksum(struct nColumns* data_array1, struct nColumns* data_array2, uint64_t numTuples1,  uint64_t numTuples2){
+
+    int i=0;
+    uint64_t r[2];
+
+    r[0]=0;
+    r[1]=0;
+
+    for (i=0; i<numTuples1; i++){
+        r[0]=data_array1->tuples[i]+r[0];
+        r[1]=data_array2->tuples[i]+r[1];
+    }
+
+    return r;
 }
