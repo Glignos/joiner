@@ -40,11 +40,7 @@ struct queries* parse_stream(char*, struct queries*);
 
 struct result_buffer* filter(struct nColumns*, struct nColumns*,  uint64_t, int);
 
-<<<<<<< HEAD
-struct result_buffer* search(struct nColumns*, struct nColumns*, int, int ,  uint64_t,  uint64_t);
-=======
 struct result_buffer* search(struct nColumns*, struct nColumns*, int, int ,  uint64_t,  uint64_t, int);
->>>>>>> cad78724382b231e12e9d5867a346c564dcda11e
 
 uint64_t checksum(struct nColumns* , uint64_t );
 
