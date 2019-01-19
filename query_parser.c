@@ -179,7 +179,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
 
 struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, int operator, int* number,  uint64_t numTuples1,  uint64_t numTuples2){
     
-    int number_of_matches_per_buffer, chain_value, i=0, j=0;//chain value is the pointer to bucket
+    int number_of_matches_per_buffer, i=0, j=0;//chain value is the pointer to bucket
     struct result_buffer* initial_buffer;
     struct result_buffer* results;
     number_of_matches_per_buffer = (((1024*1024) - sizeof(struct matches*) - sizeof(struct result_buffer*)) -3*sizeof(int) / sizeof(struct matches));
@@ -276,7 +276,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
 
 struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data_array2,  uint64_t numTuples1, int operator){
     
-    int number_of_matches_per_buffer, chain_value, i=0, j=0;//chain value is the pointer to bucket
+    int number_of_matches_per_buffer, i=0;//chain value is the pointer to bucket
     struct result_buffer* initial_buffer;
     struct result_buffer* results;
     number_of_matches_per_buffer = (((1024*1024) - sizeof(struct matches*) - sizeof(struct result_buffer*)) -3*sizeof(int) / sizeof(struct matches));
@@ -305,7 +305,7 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
                   printf("reallocated\n");
                 }
                 if (operator==0){
-                    if (data_array1->tuples[i]=data_array2->tuples[i]){
+                    if ((data_array1->tuples[i])=(data_array2->tuples[i])){
                         results->matches[results->counter].row_id_1 = i;
                         results->matches[results->counter].row_id_2 = i;
                         results->counter++;
@@ -313,7 +313,7 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
                     }
                 }
                 else if(operator==1){
-                    if (data_array1->tuples[i]>data_array2->tuples[i]){
+                    if ((data_array1->tuples[i])>(data_array2->tuples[i])){
                         results->matches[results->counter].row_id_1 = i;
                         results->matches[results->counter].row_id_2 = i;
                         results->counter++;
@@ -344,17 +344,15 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
     return initial_buffer;
 }
 
-uint64_t* checksum(struct nColumns* data_array1, struct nColumns* data_array2, uint64_t numTuples1,  uint64_t numTuples2){
+uint64_t checksum(struct nColumns* data_array1, uint64_t numTuples1){
 
     int i=0;
-    uint64_t r[2];
+    uint64_t r;
 
-    r[0]=0;
-    r[1]=0;
+    r=0;
 
     for (i=0; i<numTuples1; i++){
-        r[0]=data_array1->tuples[i]+r[0];
-        r[1]=data_array2->tuples[i]+r[1];
+        r=data_array1->tuples[i]+r;
     }
 
     return r;

@@ -37,10 +37,10 @@ struct queries{
 
 struct queries* parse_stream(char*, struct queries*);
 
-struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data_array2,  uint64_t numTuples1, int operator);
+struct result_buffer* filter(struct nColumns*, struct nColumns*,  uint64_t, int);
 
-struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, int operator, int* number,  uint64_t numTuples1,  uint64_t numTuples2);
+struct result_buffer* search(struct nColumns*, struct nColumns*, int, int* ,  uint64_t,  uint64_t);
 
-uint64_t* checksum(struct nColumns* data_array1, struct nColumns* data_array2, uint64_t numTuples1,  uint64_t numTuples2);
+uint64_t checksum(struct nColumns* , uint64_t );
 
 #endif

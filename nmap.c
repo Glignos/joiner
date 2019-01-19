@@ -14,7 +14,7 @@ struct nMap *nmapCreate(FILE *fp){
   fseek (fp , 0 , SEEK_END);
   lSize = ftell (fp);
   rewind (fp);
-  numbOfU64= lSize / sizeof(uint64_t);
+  numbOfU64= lSize / sizeof(uint64_t); //andreas warning: variable ‘numbOfU64’ set but not used [-Wunused-but-set-variable]
   //printf("Number of U64: %d\n", numbOfU64);/*for testing*/
 
   fread(&nmap->numTuples ,sizeof(uint64_t),1,fp);
