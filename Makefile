@@ -11,11 +11,15 @@ CFLAGS =  -Wall -g
 
 #hash.o: hash.c hash.h
 #	$(CC) $(CFLAGS) -c hash.c
-all: main.o join.o bucketChain.o query_parser.o process_query.o nmap.o
+all: main.o unitTest.o join.o bucketChain.o query_parser.o process_query.o nmap.o
 	gcc -o main main.o bucketChain.o join.o query_parser.o process_query.o nmap.o -g
+	gcc -o unitTest unitTest.o bucketChain.o join.o query_parser.o process_query.o nmap.o -g
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
+
+unitTest.o: unitTest.c
+	$(CC) $(CFLAGS) -c unitTest.c
 
 bucketChain.o: bucketChain.c
 	$(CC) $(CFLAGS) -c bucketChain.c
