@@ -112,11 +112,11 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
     results = initial_buffer;
     initial_buffer->number_of_matches_per_buffer = number_of_matches_per_buffer;
     initial_buffer->total_results=0;
-    printf("initialized results");
+    printf("initialized results\n");
     for(int i=0; i<array_size; i++){
       value_of_hash = bit_hash_function(array_to_search.tuples[i]);//get bitwise hash value
       bucket_to_search = &buckets_table->buckets[value_of_hash];
-      printf("hashed and found bucket \n");
+      //printf("hashed and found bucket \n");
       value_of_prime_hash = hash(array_to_search.tuples[i], 73);//get prime ahsh value
       chain_value = arrayBctChn[value_of_hash].bucket[value_of_prime_hash];
 
@@ -125,7 +125,7 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
             //fixme we need to add more cases for matches
             //potentially besides == we need to do a scan ignoring the buckets since we dont have something ordered to utilise
             if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
-                  printf("reallocating\n");
+                  //printf("reallocating\n");
                   results->next_result_buffer = malloc(sizeof(struct result_buffer));
                   results->next_result_buffer->total_results = (int)results->total_results;
                   results = results->next_result_buffer;
@@ -133,18 +133,18 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
                   results->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
                   results->next_result_buffer = NULL;
                   results->number_of_matches_per_buffer = number_of_matches_per_buffer;
-                  printf("reallocated\n");
+                  //printf("reallocated\n");
             }
-            printf("adding match \n");
+            //printf("adding match \n");
             results->matches[results->counter].row_id_1 = bucket_to_search->rows[chain_value].row_id;//save matches in result buffer
             results->matches[results->counter].row_id_2 = i;
             results->counter++;
             results->total_results++;
-            printf("added match\n");
+            //printf("added match\n");
           }
-          printf("getting next chain value \n");
+          //printf("getting next chain value \n");
           chain_value = arrayBctChn[value_of_hash].chain[chain_value];//get next chain value
-          printf("got next chain value\n");
+          //printf("got next chain value\n");
       }
     }
     if(initial_buffer->total_results==0){

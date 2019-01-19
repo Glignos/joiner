@@ -14,6 +14,7 @@ struct comparison{
     struct table_n_column table_pair_1;
     struct table_n_column table_pair_2;
     int number;
+    int arithmetic;
     int comparison_type;//using the static array above the int indicates the type of comparison
 };
 
@@ -39,7 +40,11 @@ struct queries* parse_stream(char*, struct queries*);
 
 struct result_buffer* filter(struct nColumns*, struct nColumns*,  uint64_t, int);
 
+<<<<<<< HEAD
 struct result_buffer* search(struct nColumns*, struct nColumns*, int, int ,  uint64_t,  uint64_t);
+=======
+struct result_buffer* search(struct nColumns*, struct nColumns*, int, int ,  uint64_t,  uint64_t, int);
+>>>>>>> cad78724382b231e12e9d5867a346c564dcda11e
 
 uint64_t checksum(struct nColumns* , uint64_t );
 

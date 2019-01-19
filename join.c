@@ -32,7 +32,7 @@ struct bucket_array* hash_data_array(struct nColumns data_array, uint64_t numTup
     struct bucket_array* bucket_table = create_bucket_array();
     for(int i=0;i<numTuples;i++){
         //hash and find the appropriate bucket
-        printf(" Row:%d Value: %" PRIu64 "\n", i,data_array.tuples[i]);
+        //printf(" Row:%d Value: %" PRIu64 "\n", i,data_array.tuples[i]);
         hash_value = bit_hash_function(data_array.tuples[i]);
         bucket_counter = bucket_table->buckets[hash_value].counter;
         bucket_max_size = bucket_table->buckets[hash_value].max_size;
@@ -86,10 +86,10 @@ int32_t* create_ordered_data_array(int array_size, struct psum* psum_table, stru
     }
 	printf("THE PARTY STARTS NOW \n");
 	for (int z = 0; z < array_size; z++) {
-		printf("RowId: %d , Value: %d\n", ordered_array[z+array_size], ordered_array[z]);
+		//printf("RowId: %d , Value: %d\n", ordered_array[z+array_size], ordered_array[z]);
 	}
     for(int w =0; w <buckets_table->num_of_buckets; w++){
-        printf("Bucket no %d starts with an offset of %d \n", w, psum_table->sums[w].hash_offset);
+        //printf("Bucket no %d starts with an offset of %d \n", w, psum_table->sums[w].hash_offset);
     }
     return ordered_array;
 };
