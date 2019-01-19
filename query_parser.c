@@ -244,7 +244,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
                   results->number_of_matches_per_buffer = number_of_matches_per_buffer;
                   printf("reallocated\n");
                 }
-                if (strcmp(operator,">")==0){
+                if (operator==1){
                     if (data_array1->tuples[i]>data_array2->tuples[j]){
                         results->matches[results->counter].row_id_1 = i;
                         results->matches[results->counter].row_id_2 = j;
@@ -253,7 +253,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
                     }
                          
                 }
-                else if (strcmp(operator,"<")==0){
+                else if (operator==2){
                     if (data_array1->tuples[i]<data_array2->tuples[j]){
                         results->matches[results->counter].row_id_1 = i;
                         results->matches[results->counter].row_id_2 = j;
@@ -305,7 +305,7 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
                   printf("reallocated\n");
                 }
                 if (operator==0){
-                    if (data_array1->tuples[i]=data_array2->tuples[i]){
+                    if (data_array1->tuples[i]==data_array2->tuples[i]){
                         results->matches[results->counter].row_id_1 = i;
                         results->matches[results->counter].row_id_2 = i;
                         results->counter++;
