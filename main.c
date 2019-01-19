@@ -90,7 +90,7 @@ int main (int argc, char* argv[]){
 
   for (i=0; i < arrayN.nMap[0]->numTuples; i++  ){
 
-    printf("Row:%d Value: %" PRIu64 "\n",  i, arrayN.nMap[0]->ncolumns[0].tuples[i]);
+    //printf("Row:%d Value: %" PRIu64 "\n",  i, arrayN.nMap[0]->ncolumns[0].tuples[i]);
 
   }
   while (scanf(" %[^\n]", buf) != EOF){

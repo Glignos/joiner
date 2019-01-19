@@ -110,10 +110,11 @@ struct queries* parse_stream(char* buff, struct queries* queries){
             }
             if(buff[i + 1] == '|' || buff[i + 1] == '&'){
                 query->comparisons[query->comparisons_num].number = table_or_int; //its a number and not a table
+                query->comparisons[query->comparisons_num].arithmetic = 1;
                 //printf("got number %d \n", table_or_int);
             }
             else if(buff[i + 1] == '.'){//in the case its an 
-                query->comparisons[query->comparisons_num].number = NULL; //its not a number and number is null maybe fixme
+                query->comparisons[query->comparisons_num].arithmetic = 0; //its not a number and number is null maybe fixme
                 i++;//reaching the dot
                 i++;//reaching the column
                 //printf("got comparison2 table %d \n", table_or_int);
@@ -177,7 +178,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
 }
 
 
-struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, int operator, int* number,  uint64_t numTuples1,  uint64_t numTuples2){
+struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data_array2, int operator, int number,  uint64_t numTuples1,  uint64_t numTuples2, int arithmetic){
     
     int number_of_matches_per_buffer, i=0, j=0;//chain value is the pointer to bucket
     struct result_buffer* initial_buffer;
@@ -192,7 +193,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
     initial_buffer->total_results=0;
 
 
-    if ((number!=NULL) && (data_array2==NULL)){
+    if ((arithmetic==1) && (data_array2==NULL)){
         printf("Case number: %d\n", number);
         for (i=0; i<numTuples1; i++){
             
@@ -230,7 +231,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
         }
     }
     else{
-        printf("Case arrays %s\n", operator);
+        printf("Case arrays %d\n", operator);
         for (i=0; i<numTuples1; i++){
             for(j=0; j<numTuples2; j++){
                 if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
