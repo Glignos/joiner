@@ -388,3 +388,11 @@ void free_results(struct result_buffer* buffer){
             buffer = temp;
         }
 }
+
+void free_queries(struct queries* queries){
+    for(int i=0; i< queries->number_of_queries;i++){
+        free(queries->query_array[i].table_ids_array);
+        free(queries->query_array[i].comparisons);
+        free(queries->query_array[i].sums);
+    }
+}
