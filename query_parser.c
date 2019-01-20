@@ -192,6 +192,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
     initial_buffer->number_of_matches_per_buffer = number_of_matches_per_buffer;
     initial_buffer->total_results=0;
 
+    
 
     if ((arithmetic==1) && (data_array2==NULL)){
         printf("Case number: %d\n", number);

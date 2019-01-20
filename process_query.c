@@ -65,6 +65,45 @@ void crossjoin_tables(struct generated_table *table1, struct generated_table *ta
     join_tables_used(table1, table2);
 }
 
+struct nMap *create_table_from_matches_filter(struct result_buffer *result_buffer, struct nMap *table1)
+{
+    printf("create table from matches buffer \n");
+    if (result_buffer->total_results == 0)
+    {
+        printf("Rare \n");
+        return NULL;
+    }
+    printf("Table 1 columns %d \n",table1->numColumns);
+    //printf("Table 2 columns %d \n",table2->numColumns);
+    struct nMap *newTable = malloc(sizeof(struct nMap));
+    int new_num_of_columns = table1->numColumns;
+    int new_num_of_tuples = result_buffer->total_results;
+    newTable->numTuples = new_num_of_tuples;
+    newTable->numColumns = new_num_of_columns;
+    int results_from_buffer = 0;
+    printf("initialized\n");
+    newTable->ncolumns = malloc(sizeof(struct nColumns) * (new_num_of_tuples));
+    for (int i = 0; i < new_num_of_columns; i++)
+    {
+        newTable->ncolumns[i].tuples = malloc(sizeof(uint64_t) * (new_num_of_tuples));
+    };
+    for (int i = 0; i < result_buffer->total_results; i++)
+    {
+        for (int w = 0; w < table1->numColumns; w++)
+        {
+            newTable->ncolumns[w].tuples[i] = table1->ncolumns[w].tuples[result_buffer->matches[i % result_buffer->number_of_matches_per_buffer].row_id_1];
+        }
+        
+        results_from_buffer++;
+        if (results_from_buffer == result_buffer->counter && result_buffer->next_result_buffer != NULL)
+        {
+            result_buffer = result_buffer->next_result_buffer;
+            results_from_buffer = 0;
+        }
+    }
+    return newTable;
+}
+
 struct nMap *create_table_from_matches(struct result_buffer *result_buffer, struct nMap *table1, struct nMap *table2)
 {
     printf("create table from matches buffer \n");
@@ -310,7 +349,7 @@ void run_query(struct nMapArray *tables, struct query query)
         printf("update table mappings \n");
         if (newTable == NULL)
         {
-            return NULL; // since its join if one is NUll all are NULL duh
+            //return NULL; // since its join if one is NUll all are NULL duh
         }
         update_generated_table_mapping(generated_tables, query, table1_replaced, table2_replaced, newTable, i, tables);
     }
