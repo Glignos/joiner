@@ -3,7 +3,8 @@
 static char comparison_types[] = {'=', '>', '<'};
 
 struct queries* parse_stream(char* buff, struct queries* queries){
-    int items_read, table_or_int, i;
+    int items_read, i;
+    uint64_t table_or_int;
     struct query* query;
     //printf("reading a line \n");
 
@@ -52,7 +53,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
                 i++;
             }
             //printf("got table %d \n", table_or_int);
-            query->table_ids_array[query->tables_num] = table_or_int; //pass the int
+            query->table_ids_array[query->tables_num] = (int)table_or_int; //pass the int
         }
     }
     i++;//pass the | symbol
@@ -80,7 +81,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
                 i++;
             }
             //printf("got comparison table %d \n", table_or_int);
-            query->comparisons[query->comparisons_num].table_pair_1.table = table_or_int; //convert to int
+            query->comparisons[query->comparisons_num].table_pair_1.table = (int)table_or_int; //convert to int
             i++;//we assume that data is coherent and here is the .
             i++;//now we get the column
             table_or_int = 0;
@@ -92,7 +93,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
                 i++;
             }
             //printf("got comparison column %d \n", table_or_int);
-            query->comparisons[query->comparisons_num].table_pair_1.column = table_or_int; //convert to int
+            query->comparisons[query->comparisons_num].table_pair_1.column = (int) table_or_int; //convert to int
             i++;//now we get the symbol
             for(int w=0;w<3;w++){//fixme add more types of operators and scan an extra char incase of double
                 if(comparison_types[w] == buff[i]){//maybe use a switch case should be faster
@@ -101,6 +102,8 @@ struct queries* parse_stream(char* buff, struct queries* queries){
             }
             i++;//reaching second array or number
             table_or_int = 0;
+                printf("i did not betray you %ld", table_or_int);
+ 
             while(1){
                 table_or_int = (10*table_or_int) + (buff[i] - '0'); //convert to int
                 if(buff[i+1] < '0' || buff[i+1]> '9'){
@@ -110,6 +113,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
             }
             if(buff[i + 1] == '|' || buff[i + 1] == '&'){
                 query->comparisons[query->comparisons_num].number = table_or_int; //its a number and not a table
+                printf("i did not betray you %ld", table_or_int);
                 query->comparisons[query->comparisons_num].arithmetic = 1;
                 //printf("got number %d \n", table_or_int);
             }
@@ -118,7 +122,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
                 i++;//reaching the dot
                 i++;//reaching the column
                 //printf("got comparison2 table %d \n", table_or_int);
-                query->comparisons[query->comparisons_num].table_pair_2.table = table_or_int;
+                query->comparisons[query->comparisons_num].table_pair_2.table = (int)table_or_int;
                             table_or_int = 0;
                 while(1){
                     table_or_int = (10*table_or_int) + (buff[i] - '0'); //convert to int
@@ -128,7 +132,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
                     i++;
                 }
                 //printf("got comparison2 column %d \n", table_or_int);
-                query->comparisons[query->comparisons_num].table_pair_2.column = table_or_int;
+                query->comparisons[query->comparisons_num].table_pair_2.column = (int)table_or_int;
             }
         }
     }
@@ -152,7 +156,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
                     }
                     i++;
                 }
-                query->sums[query->sums_num].table = table_or_int; //convert to int
+                query->sums[query->sums_num].table = (int)table_or_int; //convert to int
                 i++;//reach dot
                 i++;//reach column
                 table_or_int = 0;
@@ -240,8 +244,10 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
 
             
         }
+        printf("searched \n");
     }
     else{
+        printf("Arithmetic %d\n",arithmetic);
         printf("Case arrays \n");
         for (i=0; i<numTuples1; i++){
             for(j=0; j<numTuples2; j++){
@@ -280,7 +286,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
     }
 
     if(initial_buffer->total_results==0){
-        return NULL;
+        printf("Really though?\n");
     }
     
     return initial_buffer;
