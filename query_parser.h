@@ -46,4 +46,6 @@ uint64_t checksum(struct nColumns* , uint64_t );
 
 void free_results(struct result_buffer*);
 
+void free_queries(struct queries*);
+
 #endif

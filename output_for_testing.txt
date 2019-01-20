@@ -28,12 +28,9 @@ Doing subquery
 Doing subquery 
 Doing subquery 
 Doing subquery 
-Doing subquery 
-Doing subquery 
-Doing subquery 
-Doing subquery 
-Doing subquery 
-oads/small/r6 opened
+s/small/r5 opened
+path: ./submission/workloads/small/r6
+path: ./submission/workloads/small/r6 opened
 path: ./submission/workloads/small/r7
 path: ./submission/workloads/small/r7 opened
 path: ./submission/workloads/small/r8
@@ -60,7 +57,4 @@ HARn query: 4 1 2 11|0.1=1.0&1.0=2.1&1.0=3.1&0.1>2493|3.2 2.2 2.1
 HARn query: 10 0 13 1|0.2=1.0&1.0=2.2&0.1=3.0&0.1=209|0.2 2.5 2.2
 HARn query: 6 1 11 5|0.1=1.0&1.0=2.1&1.0=3.1&0.0>44809|2.0
 HARn query: 3 1|0.1=1.0&0.2<3071|0.2 0.2
-HARn query: 3 1 12|0.1=1.0&1.0=2.1&0.0>26374|2.0 0.1 2.1
-HARn query: 7 0|0.1=1.0&0.4<9936|0.4 0.0 1.0
-F boy 1
-AAAAAAA2
+F boy 0
