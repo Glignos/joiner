@@ -65,7 +65,11 @@ int main (int argc, char* argv[]){
     if (!resultsnm){
     printf("Results number: 0\n");
     }else{
+
     printf("Results number: %d\n", resultsnm->total_results);
+    printf("Testing create_table_from_matches_filter \n");
+       nmapNew=create_table_from_matches_filter(resultsnm, nmap); 
+       printf("New table, number of columns: %d and number of tuples %d\n ", nmapNew->numColumns, nmapNew->numTuples);
     }
     printf("Testing search for <11 expecting  9 results\n");   
     resultsnm=search(&nColumn1[0], NULL, 2, 11, 10, NULL, 1 );
@@ -109,7 +113,7 @@ int main (int argc, char* argv[]){
        printf("Results number: %d\n", resultsnm->total_results);
        printf("Testing create_table_from_matches_filter \n");
        nmapNew=create_table_from_matches_filter(resultsnm, nmap); 
-       printf("New table, number of columns: %d and number of tuples %d ", nmapNew->numColumns, nmapNew->numTuples);
+       printf("New table, number of columns: %d and number of tuples %d \n", nmapNew->numColumns, nmapNew->numTuples);
     }
 
     for(i=0; i<3; i++){

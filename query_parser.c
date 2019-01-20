@@ -200,7 +200,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
         for (i=0; i<numTuples1; i++){
             
                 if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
-                  printf("reallocating\n");
+                 // printf("reallocating\n");
                   results->next_result_buffer = malloc(sizeof(struct result_buffer));
                   results->next_result_buffer->total_results = (int)results->total_results;
                   results = results->next_result_buffer;
@@ -208,7 +208,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
                   results->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
                   results->next_result_buffer = NULL;
                   results->number_of_matches_per_buffer = number_of_matches_per_buffer;
-                  printf("reallocated\n");
+                //  printf("reallocated\n");
                 }
                 if (operator==1){
                     if (data_array1->tuples[i]>number){
@@ -237,7 +237,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
         for (i=0; i<numTuples1; i++){
             for(j=0; j<numTuples2; j++){
                 if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
-                  printf("reallocating\n");
+            //        printf("reallocating\n");
                   results->next_result_buffer = malloc(sizeof(struct result_buffer));
                   results->next_result_buffer->total_results = (int)results->total_results;
                   results = results->next_result_buffer;
@@ -245,7 +245,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
                   results->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
                   results->next_result_buffer = NULL;
                   results->number_of_matches_per_buffer = number_of_matches_per_buffer;
-                  printf("reallocated\n");
+              //    printf("reallocated\n");
                 }
                 if (operator==1){
                     if (data_array1->tuples[i]>data_array2->tuples[j]){
@@ -297,7 +297,7 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
         for (i=0; i<numTuples1; i++){
             
                 if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
-                  printf("reallocating\n");
+                 // printf("reallocating\n");
                   results->next_result_buffer = malloc(sizeof(struct result_buffer));
                   results->next_result_buffer->total_results = (int)results->total_results;
                   results = results->next_result_buffer;
@@ -305,7 +305,7 @@ struct result_buffer* filter(struct nColumns* data_array1, struct nColumns* data
                   results->matches = malloc(number_of_matches_per_buffer*sizeof(struct matches));
                   results->next_result_buffer = NULL;
                   results->number_of_matches_per_buffer = number_of_matches_per_buffer;
-                  printf("reallocated\n");
+                 // printf("reallocated\n");
                 }
                 if (operator==0){
                     if (data_array1->tuples[i]==data_array2->tuples[i]){
