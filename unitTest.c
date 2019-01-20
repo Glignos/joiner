@@ -34,7 +34,7 @@ int main (int argc, char* argv[]){
     printf("Testing search for > expecting  nothing for a result\n");
 
     struct result_buffer* resultsnm;
-    resultsnm=search(&nColumn1[0], &nColumn1[1], 1, NULL, 10, 10 );
+    resultsnm=search(&nColumn1[0], &nColumn1[1], 1, NULL, 10, 10, 0 );
     
     if (!resultsnm){
     printf("Results number: 0\n");
@@ -42,7 +42,7 @@ int main (int argc, char* argv[]){
 
 
     printf("Testing search for < expecting  100 results\n");   
-    resultsnm=search(&nColumn1[0], &nColumn1[1], 2, NULL, 10, 10 );
+    resultsnm=search(&nColumn1[0], &nColumn1[1], 2, NULL, 10, 10, 0 );
     if (!resultsnm){
     printf("Results number: 0\n");
     }else{
@@ -51,19 +51,54 @@ int main (int argc, char* argv[]){
 
     printf("Testing search for >0 expecting  9 results\n"); 
       
-    resultsnm=search(&nColumn1[0], NULL, 1, 0, 10, NULL );
+    resultsnm=search(&nColumn1[0], NULL, 1, 0, 10, NULL, 1 );
     if (!resultsnm){
     printf("Results number: 0\n");
     }else{
     printf("Results number: %d\n", resultsnm->total_results);
     }
     printf("Testing search for <11 expecting  9 results\n");   
-    resultsnm=search(&nColumn1[0], NULL, 2, 11, 10, NULL );
+    resultsnm=search(&nColumn1[0], NULL, 2, 11, 10, NULL, 1 );
     if (!resultsnm){
     printf("Results number: 0\n");
     }else{
        printf("Results number: %d\n", resultsnm->total_results);
     }
+
+
+    printf("Testing filter for = expecting  10 results\n"); 
+
+    resultsnm=filter(&nColumn1[0], &nColumn1[2], 10, 0);
+    if (!resultsnm){
+    printf("Results number: 0\n");
+    }else{
+       printf("Results number: %d\n", resultsnm->total_results);
+    }
+
+    printf("Testing filter for = expecting  0 results\n"); 
+    resultsnm=filter(&nColumn1[0], &nColumn1[1], 10, 0);
+    if (!resultsnm){
+    printf("Results number: 0\n");
+    }else{
+       printf("Results number: %d\n", resultsnm->total_results);
+    }
+
+    printf("Testing filter for col>col1 expecting  0 results\n"); 
+    resultsnm=filter(&nColumn1[0], &nColumn1[1], 10, 1);
+    if (!resultsnm){
+    printf("Results number: 0\n");
+    }else{
+       printf("Results number: %d\n", resultsnm->total_results);
+    }
+
+    printf("Testing filter for col<col1 expecting  10 results\n"); 
+    resultsnm=filter(&nColumn1[0], &nColumn1[1], 10, 2);
+    if (!resultsnm){
+    printf("Results number: 0\n");
+    }else{
+       printf("Results number: %d\n", resultsnm->total_results);
+    }
+
     for(i=0; i<3; i++){
         free(nColumn1[i].tuples);
     }
