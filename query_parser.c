@@ -30,7 +30,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
         query->sums_num = -1;
         //its quite big
     }
-    printf("preparing query\n");
+    //printf("preparing query\n");
     for(i=0;buff[i] != NULL; i++){
         table_or_int = 0;
         if(buff[i] == '|'){//initial loop to get arrays used
@@ -102,7 +102,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
             }
             i++;//reaching second array or number
             table_or_int = 0;
-                printf("i did not betray you %ld", table_or_int);
+                //printf("i did not betray you %ld", table_or_int);
  
             while(1){
                 table_or_int = (10*table_or_int) + (buff[i] - '0'); //convert to int
@@ -113,7 +113,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
             }
             if(buff[i + 1] == '|' || buff[i + 1] == '&'){
                 query->comparisons[query->comparisons_num].number = table_or_int; //its a number and not a table
-                printf("i did not betray you %ld", table_or_int);
+                //printf("i did not betray you %ld", table_or_int);
                 query->comparisons[query->comparisons_num].arithmetic = 1;
                 //printf("got number %d \n", table_or_int);
             }
@@ -167,7 +167,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
                     }
                     i++;
                 }
-                printf("I believe column is %d", table_or_int);
+                //printf("I believe column is %d", table_or_int);
                 query->sums[query->sums_num].column =table_or_int; //convert to int
                 if(buff[i+2] < '0' || buff[i+2]> '9'){
                     break;
@@ -178,7 +178,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
 
 
     //printf(" %s \n", buff);
-    printf("End of stream \n");
+    //printf("End of stream \n");
     return queries;
 }
 
@@ -200,7 +200,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
     
 
     if (arithmetic==1){
-        printf("Case number: \n");
+        //printf("Case number: \n");
         for (i=0; i<numTuples1; i++){
             
                 if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
@@ -244,11 +244,11 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
 
             
         }
-        printf("searched \n");
+        //printf("searched \n");
     }
     else{
-        printf("Arithmetic %d\n",arithmetic);
-        printf("Case arrays \n");
+        //printf("Arithmetic %d\n",arithmetic);
+        //printf("Case arrays \n");
         for (i=0; i<numTuples1; i++){
             for(j=0; j<numTuples2; j++){
                 if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
@@ -286,7 +286,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
     }
 
     if(initial_buffer->total_results==0){
-        printf("Really though?\n");
+        //printf("Really though?\n");
     }
     
     return initial_buffer;

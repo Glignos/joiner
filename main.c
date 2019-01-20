@@ -61,7 +61,7 @@ int main (int argc, char* argv[]){
           fprintf(fptr, "Done\n");
                 break;
         }
-        printf("path: %s\n", buf);
+        //printf("path: %s\n", buf);
         if (ncnt<arrayN.nCount){
             fprintf(fptr, "path: %s\n", buf);
             fp=fopen(buf,"rb");
@@ -113,22 +113,19 @@ int main (int argc, char* argv[]){
 
   while (scanf(" %[^\n]", buf) != EOF){
 
-    if (qcount>3){
-      exit(1);
-        break;
-      }
+
  
     if(strcmp(buf, "F") == 0){
       qcount=qcount+1;
       fprintf(fptr,"F boy %d\n");
-      printf("running query\n");
+      //printf("running query\n");
       run_queries(&arrayN,queries);
-      break;
+      continue;
     }
     else{
       fprintf(fptr,"HARn query: %s\n", buf);
       queries = parse_stream(buf,queries);
-      printf ("query: %s\n", buf);
+      //printf ("query: %s\n", buf);
 
     }
   }

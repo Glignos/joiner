@@ -84,7 +84,7 @@ int32_t* create_ordered_data_array(int array_size, struct psum* psum_table, stru
             current_position++;
         }
     }
-	printf("THE PARTY STARTS NOW \n");
+	//printf("THE PARTY STARTS NOW \n");
 	for (int z = 0; z < array_size; z++) {
 		//printf("RowId: %d , Value: %d\n", ordered_array[z+array_size], ordered_array[z]);
 	}

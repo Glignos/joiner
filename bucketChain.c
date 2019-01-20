@@ -112,7 +112,7 @@ struct result_buffer* match_arrays(struct bucket_array* buckets_table,  struct a
     results = initial_buffer;
     initial_buffer->number_of_matches_per_buffer = number_of_matches_per_buffer;
     initial_buffer->total_results=0;
-    printf("initialized results\n");
+    //printf("initialized results\n");
     for(int i=0; i<array_size; i++){
       value_of_hash = bit_hash_function(array_to_search.tuples[i]);//get bitwise hash value
       bucket_to_search = &buckets_table->buckets[value_of_hash];
