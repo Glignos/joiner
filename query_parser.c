@@ -194,8 +194,8 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
 
     
 
-    if ((arithmetic==1) && (data_array2==NULL)){
-        printf("Case number: %d\n", number);
+    if (arithmetic==1){
+        printf("Case number: \n");
         for (i=0; i<numTuples1; i++){
             
                 if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
@@ -232,7 +232,7 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
         }
     }
     else{
-        printf("Case arrays %d\n", operator);
+        printf("Case arrays \n");
         for (i=0; i<numTuples1; i++){
             for(j=0; j<numTuples2; j++){
                 if(results->counter == number_of_matches_per_buffer){//if result buffer is full get a new one
