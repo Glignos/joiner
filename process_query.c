@@ -67,7 +67,7 @@ void crossjoin_tables(struct generated_table *table1, struct generated_table *ta
 
 struct nMap *create_table_from_matches_filter(struct result_buffer *result_buffer, struct nMap *table1)
 {
-    printf("create table from matches buffer \n");
+    printf("create table from matches filter \n");
     if (result_buffer->total_results == 0)
     {
         printf("Rare \n");
@@ -98,9 +98,7 @@ struct nMap *create_table_from_matches_filter(struct result_buffer *result_buffe
         results_from_buffer++;
         if (results_from_buffer == result_buffer->counter && result_buffer->next_result_buffer != NULL)
         {
-            printf("getting new buffer \n");
             result_buffer = result_buffer->next_result_buffer;
-            printf("maybe here\n");
             results_from_buffer = 0;
         }
     }
@@ -135,10 +133,12 @@ struct nMap *create_table_from_matches(struct result_buffer *result_buffer, stru
         for (int w = 0; w < table1->numColumns; w++)
         {
             newTable->ncolumns[w].tuples[i] = table1->ncolumns[w].tuples[result_buffer->matches[i % result_buffer->number_of_matches_per_buffer].row_id_1];
+            //printf("We are at column %d and rowid: %d getting %ld\n", w,result_buffer->matches[i % result_buffer->number_of_matches_per_buffer].row_id_1, newTable->ncolumns[w].tuples[i]);
         }
         for (int w = 0; w < table2->numColumns; w++)
         {
             newTable->ncolumns[w + table1->numColumns].tuples[i] = table2->ncolumns[w].tuples[result_buffer->matches[i % result_buffer->number_of_matches_per_buffer].row_id_2];
+            //printf("We are at column %d and rowid: %d getting %ld\n", w,result_buffer->matches[i % result_buffer->number_of_matches_per_buffer].row_id_2, newTable->ncolumns[w + table1->numColumns].tuples[i]);
         }
         results_from_buffer++;
         if (results_from_buffer == result_buffer->counter && result_buffer->next_result_buffer != NULL)
@@ -357,10 +357,6 @@ void run_query(struct nMapArray *tables, struct query query)
                 newTable = create_table_from_matches_filter(resultsnm, table1_pointer);
             }
         }
-
-        printf("create new table\n");
-        newTable = create_table_from_matches(resultsnm, table1_pointer, table2_pointer);
-        printf("update table mappings \n");
         if (newTable == NULL)
         {
             //return NULL; // since its join if one is NUll all are NULL duh
@@ -369,7 +365,7 @@ void run_query(struct nMapArray *tables, struct query query)
     }
     for (int i = 1; i < generated_tables->total_tables; i++)
     {
-        printf(fptr, "crossjoin tables \n");
+        printf("crossjoin tables \n");
         crossjoin_tables(&(generated_tables->tables[i - 1]), &(generated_tables->tables[i]));
     }
     printf("Total sums to project %d \n", query.sums_num);
@@ -390,12 +386,9 @@ void run_query(struct nMapArray *tables, struct query query)
         temp = temp + query.sums[y].column;
         printf("temp is %d \n", temp);
         data_1 = &generated_tables->tables[0].table_pointer->ncolumns[temp];
-        printf("THe checksum is %ld \n",checksum(data_1, tables->nMap[query.table_ids_array[query.sums[y].table]]->numTuples));
+        printf("table to grab %d \n",query.table_ids_array[query.sums[y].table]);
+        printf("THe checksum is %ld \n",checksum(data_1, generated_tables->tables[0].table_pointer->numTuples));
     }
-
-    //now we should have only 1 generated table remaining containing our result
-
-    //run check sums
 }
 
 void run_queries(struct nMapArray *tables, struct queries *queries)

@@ -2,17 +2,35 @@ run query
 Doing subquery 
 Doing subquery 
 Doing subquery 
-ads/small/r0 opened
-path: submission/workloads/small/r1
-path: submission/workloads/small/r1 opened
-path: submission/workloads/small/r2
-path: submission/workloads/small/r2 opened
-path: submission/workloads/small/r3
-path: submission/workloads/small/r3 opened
-path: submission/workloads/small/r4
-path: submission/workloads/small/r4 opened
+rkloads/small/r0 opened
+path: ./submission/workloads/small/r1
+path: ./submission/workloads/small/r1 opened
+path: ./submission/workloads/small/r2
+path: ./submission/workloads/small/r2 opened
+path: ./submission/workloads/small/r3
+path: ./submission/workloads/small/r3 opened
+path: ./submission/workloads/small/r4
+path: ./submission/workloads/small/r4 opened
+path: ./submission/workloads/small/r5
+path: ./submission/workloads/small/r5 opened
+path: ./submission/workloads/small/r6
+path: ./submission/workloads/small/r6 opened
+path: ./submission/workloads/small/r7
+path: ./submission/workloads/small/r7 opened
+path: ./submission/workloads/small/r8
+path: ./submission/workloads/small/r8 opened
+path: ./submission/workloads/small/r9
+path: ./submission/workloads/small/r9 opened
+path: ./submission/workloads/small/r10
+path: ./submission/workloads/small/r10 opened
+path: ./submission/workloads/small/r11
+path: ./submission/workloads/small/r11 opened
+path: ./submission/workloads/small/r12
+path: ./submission/workloads/small/r12 opened
+path: ./submission/workloads/small/r13
+path: ./submission/workloads/small/r13 opened
 Done
-harness: Done 5
+harness: Done 14
 HARn query: 3 0 1|0.2=1.0&0.1=2.0&0.2>3499|1.2 0.1
 F boy 0
 AAAAAAA2

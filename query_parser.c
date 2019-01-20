@@ -356,7 +356,7 @@ uint64_t checksum(struct nColumns* data_array1, uint64_t numTuples1){
 
     for (i=0; i<numTuples1; i++){
         r=data_array1->tuples[i]+r;
-        printf("%ld \n", data_array1->tuples[i]);
+        //printf("this is elem %ld \n", data_array1->tuples[i]);
     }
 
     return r;
