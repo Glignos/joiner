@@ -23,8 +23,6 @@ void free_generated_table(struct generated_table *generated_table)
 
 void join_tables_used(struct generated_table *table1, struct generated_table *table2)
 {
-    fprintf(fptr, "join tables used \n");
-    //printf("Joining tables\n");
     for (int i = 0; i < table2->num_of_tables; i++)
     {
         table1->tables_used[table1->num_of_tables] = table2->tables_used[i];
@@ -61,6 +59,7 @@ void crossjoin_tables(struct generated_table *table1, struct generated_table *ta
     }
     free_nMap(table1->table_pointer);
     free_nMap(table2->table_pointer);
+    free_generated_table(table2);
     table1->table_pointer = newTable;
     join_tables_used(table1, table2);
 }
@@ -103,7 +102,7 @@ struct nMap *create_table_from_matches_filter(struct result_buffer *result_buffe
             results_from_buffer = 0;
         }
     }
-   // printf("Now you don't\n");
+    free_results(result_buffer);
     return newTable;
 }
 
@@ -148,6 +147,7 @@ struct nMap *create_table_from_matches(struct result_buffer *result_buffer, stru
             results_from_buffer = 0;
         }
     }
+    free_results(result_buffer);
     return newTable;
 }
 
@@ -202,6 +202,7 @@ void update_generated_table_mapping(struct generated_tables *generated_tables, s
         join_tables_used(&generated_tables->tables[table1_replaced], &generated_tables->tables[table2_replaced]); //fixme maybe
         //generated_tables->tables[table1_replaced].num_of_tables++;
         //generated_tables->tables[table1_replaced].tables_used[generated_tables->tables[table1_replaced].num_of_tables - 1] = comparison.table_pair_2.table;
+        free_generated_table(&generated_tables->tables[generated_tables->total_tables]);
         generated_tables->total_tables--; //we decrease since we have one less array
         for (int z = table2_replaced; z < generated_tables->total_tables; z++)
         {
@@ -246,7 +247,7 @@ void run_query(struct nMapArray *tables, struct query query)
     struct nColumns *data_1;
     struct nColumns *data_2;
     int temp;
-    char snum[50];
+    
     generated_tables = malloc(sizeof(struct generated_tables));
     generated_tables->tables = malloc(query.comparisons_num * sizeof(struct generated_table)); //move the allocation to the main to avoid losing time at allocating memory preallocate big enough number and check at this point if its enough for this query
     for (int y = 0; y < query.comparisons_num; y++)
@@ -372,7 +373,7 @@ void run_query(struct nMapArray *tables, struct query query)
     for (int i = 1; i < generated_tables->total_tables; i++)
     {
         //printf("crossjoin tables \n");
-        crossjoin_tables(&(generated_tables->tables[i - 1]), &(generated_tables->tables[i]));
+        crossjoin_tables(&(generated_tables->tables[0]), &(generated_tables->tables[i]));
     }
     //printf("Total sums to project %d \n", query.sums_num);
     for (int y = 0; y <= query.sums_num; y++)
@@ -396,12 +397,13 @@ void run_query(struct nMapArray *tables, struct query query)
         temp = temp + query.sums[y].column;
         //printf("temp is %d \n", temp);
         data_1 = &generated_tables->tables[0].table_pointer->ncolumns[temp];
-        //printf("table to grab %d \n",query.table_ids_array[query.sums[y].table]);
+        
         printf("%llu ",checksum(data_1, generated_tables->tables[0].table_pointer->numTuples));
-        //sprintf(snum, "%llu ",checksum(data_1, generated_tables->tables[0].table_pointer->numTuples));
-        //printf("26468015 32533054");
+        
     
     }
+    free_nMap(generated_tables->tables[0].table_pointer);
+    free_generated_table(&generated_tables->tables[0]);
 }
 
 void run_queries(struct nMapArray *tables, struct queries *queries)
@@ -442,25 +444,13 @@ struct result_buffer *run_radix(struct nColumns *column1, struct nColumns *colum
     //fixme memory free result after creating newtable
     return resultsnm;
 
-    // for (i=0; i<nmap1->numColumns; i++){
-    //   free(nmap1->ncolumns[i].tuples);
-    // }
-    // free(nmap1->ncolumns);
-    // for (i=0; i<nmap2->numColumns; i++){
-    // //   free(nmap2->ncolumns[i].tuples);
-    // // }
-    // free(nmap2->ncolumns);
 
-    //free(array->tuples);
-    //   for(i=0; i<buckets_table->num_of_buckets; i++){
-    //     free(arrayBctChn[i].bucket);
-    //     free(arrayBctChn[i].chain);
-    //     free(buckets_table->buckets[i].rows);
-    //   }
-    //   free(buckets_table->buckets);
-    //   free(buckets_table);
-    //   free(arrayBctChn);
-    //   //free(ordered_array);
-    //   free(psum_table->sums);
-    //   free(psum_table);
+    for(int i=0; i<buckets_table->num_of_buckets; i++){
+        free(arrayBctChn[i].bucket);
+         free(arrayBctChn[i].chain);
+         free(buckets_table->buckets[i].rows);
+       }
+       free(buckets_table->buckets);
+       free(buckets_table);
+       free(arrayBctChn);
 }
