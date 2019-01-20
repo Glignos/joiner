@@ -350,7 +350,7 @@ void run_query(struct nMapArray *tables, struct query query)
         if (query.comparisons[i].arithmetic == 0)
         {
             //run if equality
-            if (table1_pointer == table2_pointer)
+            if (query.comparisons[i].table_pair_1.table == query.comparisons[i].table_pair_2.table)
             {   
                 //printf("Im filtering \n");
                 resultsnm = filter(data_1, data_2, table1_pointer->numTuples, query.comparisons[i].comparison_type);
