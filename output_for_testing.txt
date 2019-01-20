@@ -1,0 +1,18 @@
+run query 
+Doing subquery 
+Doing subquery 
+Doing subquery 
+ads/small/r0 opened
+path: submission/workloads/small/r1
+path: submission/workloads/small/r1 opened
+path: submission/workloads/small/r2
+path: submission/workloads/small/r2 opened
+path: submission/workloads/small/r3
+path: submission/workloads/small/r3 opened
+path: submission/workloads/small/r4
+path: submission/workloads/small/r4 opened
+Done
+harness: Done 5
+HARn query: 3 0 1|0.2=1.0&0.1=2.0&0.2>3499|1.2 0.1
+F boy 0
+AAAAAAA2
