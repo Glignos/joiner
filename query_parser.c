@@ -376,3 +376,15 @@ uint64_t checksum(struct nColumns* data_array1, uint64_t numTuples1){
 
     return r;
 }
+
+
+
+void free_results(struct result_buffer* buffer){
+    struct result_buffer* temp;
+    while(buffer != NULL)
+        {   temp = buffer->next_result_buffer;
+            free(buffer->matches);
+            free(buffer);
+            buffer = temp;
+        }
+}

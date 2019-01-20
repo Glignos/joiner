@@ -44,4 +44,6 @@ struct result_buffer* search(struct nColumns*, struct nColumns*, int, int ,  uin
 
 uint64_t checksum(struct nColumns* , uint64_t );
 
+void free_results(struct result_buffer*);
+
 #endif
