@@ -43,7 +43,7 @@ void crossjoin_tables(struct generated_table *table1, struct generated_table *ta
     newTable->ncolumns = malloc(sizeof(struct nColumns) * (new_num_of_columns));
     for (int i = 0; i < new_num_of_columns; i++)
     {
-        newTable->ncolumns[i].tuples = malloc(sizeof(struct nColumns) * (new_num_of_tuples));
+        newTable->ncolumns[i].tuples = malloc(sizeof(uint64_t) * (new_num_of_tuples));
     }
     for (int b = 0; b < new_num_of_tuples; b = b + (table2->table_pointer->numTuples))
     { //fixme use columns to copy elements faster
@@ -386,8 +386,8 @@ void run_query(struct nMapArray *tables, struct query query)
             temp = temp + generated_tables->tables[0].columns_per_table[i];
             printf("columns per table %d\n",generated_tables->tables[0].columns_per_table[i]);
         }
-        printf("Checksum column is %d \n", query.sums[y].table);
-        temp = temp + query.sums[y].table;
+        printf("Checksum column is %d \n", query.sums[y].column);
+        temp = temp + query.sums[y].column;
         printf("temp is %d \n", temp);
         data_1 = &generated_tables->tables[0].table_pointer->ncolumns[temp];
         printf("THe checksum is %ld \n",checksum(data_1, tables->nMap[query.table_ids_array[query.sums[y].table]]->numTuples));

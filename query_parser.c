@@ -163,6 +163,7 @@ struct queries* parse_stream(char* buff, struct queries* queries){
                     }
                     i++;
                 }
+                printf("I believe column is %d", table_or_int);
                 query->sums[query->sums_num].column =table_or_int; //convert to int
                 if(buff[i+2] < '0' || buff[i+2]> '9'){
                     break;
@@ -355,6 +356,7 @@ uint64_t checksum(struct nColumns* data_array1, uint64_t numTuples1){
 
     for (i=0; i<numTuples1; i++){
         r=data_array1->tuples[i]+r;
+        printf("%ld \n", data_array1->tuples[i]);
     }
 
     return r;
