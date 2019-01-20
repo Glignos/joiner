@@ -228,6 +228,15 @@ struct result_buffer* search(struct nColumns* data_array1, struct nColumns* data
                     }
                            
                 }
+                else if (operator==0){ 
+                    if (data_array1->tuples[i]==number){
+                        results->matches[results->counter].row_id_1 = i;
+                        results->matches[results->counter].row_id_2 = number;
+                        results->counter++;
+                        results->total_results++;
+                    }
+                           
+                }
 
             
         }

@@ -55,6 +55,7 @@ int main (int argc, char* argv[]){
   // for(i=0; i<arrayN.nCount ; i++){
   //   arrayN.nMap[i]=NULL;
   // }
+  
  
   while (scanf("%s", buf)){
         
@@ -62,7 +63,7 @@ int main (int argc, char* argv[]){
           fprintf(fptr, "Done\n");
                 break;
         }
-        
+        printf("path: %s\n", buf);
         if (ncnt<arrayN.nCount){
             fprintf(fptr, "path: %s\n", buf);
             fp=fopen(buf,"rb");
@@ -88,11 +89,6 @@ int main (int argc, char* argv[]){
   }
   fprintf(fptr,"harness: %s %d\n", buf, ncnt);
 
-  for (i=0; i < arrayN.nMap[0]->numTuples; i++  ){
-
-    //printf("Row:%d Value: %" PRIu64 "\n",  i, arrayN.nMap[0]->ncolumns[0].tuples[i]);
-
-  }
   while (scanf(" %[^\n]", buf) != EOF){
 
     if (qcount>3){
@@ -236,7 +232,9 @@ int main (int argc, char* argv[]){
   //   free(psum_table->sums);
   //   free(psum_table);
   fprintf(fptr, "AAAAAAA2");
+
   fclose(fptr);
+
   //  // free(array);
     exit(0);
 };
