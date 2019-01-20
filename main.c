@@ -106,6 +106,11 @@ int main (int argc, char* argv[]){
   }
   fprintf(fptr,"harness: %s %d\n", buf, ncnt);
 
+  // for (i=0; i<arrayN.nMap[9]->numTuples; i++){
+  //   printf("Row %d value %d, %d , %d , %d , %d\n",i ,arrayN.nMap[9]->ncolumns[0].tuples[i], arrayN.nMap[9]->ncolumns[1].tuples[i], arrayN.nMap[9]->ncolumns[2].tuples[i], arrayN.nMap[9]->ncolumns[3].tuples[i], arrayN.nMap[9]->ncolumns[4].tuples[i]);
+
+  // }
+
   while (scanf(" %[^\n]", buf) != EOF){
 
     if (qcount>3){
@@ -194,9 +199,11 @@ int main (int argc, char* argv[]){
 
   }
   free(arrayN.nMap);
+  //free(queries->query_array);
+  //free(queries);
 
   fclose(fptr);
 
-  //  // free(array);
+  
     exit(0);
 };

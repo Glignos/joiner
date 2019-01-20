@@ -13,7 +13,7 @@ struct table_n_column{
 struct comparison{
     struct table_n_column table_pair_1;
     struct table_n_column table_pair_2;
-    int number;
+    uint64_t number;
     int arithmetic;
     int comparison_type;//using the static array above the int indicates the type of comparison
 };
