@@ -120,6 +120,11 @@ int main (int argc, char* argv[]){
       fprintf(fptr,"F boy %d\n");
       //printf("running query\n");
       run_queries(&arrayN,queries);
+      free_queries(queries);
+      queries = malloc(sizeof(struct queries));
+      queries->number_of_queries = -1;
+      queries->size = 50;
+      queries->query_array = malloc(50 * sizeof(struct query));
       continue;
     }
     else{
