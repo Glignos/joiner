@@ -66,17 +66,24 @@ void crossjoin_tables(struct generated_table *table1, struct generated_table *ta
 
 struct nMap *create_table_from_matches_filter(struct result_buffer *result_buffer, struct nMap *table1)
 {
-    //printf("create table from matches filter \n");
+    struct result_buffer* temp_buffer;
+    temp_buffer = result_buffer;
+    int total_results;
+    //printf("create table from matches buffer \n");
     if (result_buffer->total_results == 0)
     {
         //printf("Rare \n");
         return NULL;
     }
+    while(temp_buffer->next_result_buffer){
+        temp_buffer = temp_buffer->next_result_buffer;
+    }
+    total_results = temp_buffer->total_results;
     //printf("meh\n");
     //printf("Table 1 columns %d \n",table1->numColumns);
     struct nMap *newTable = malloc(sizeof(struct nMap));
     int new_num_of_columns = table1->numColumns;
-    int new_num_of_tuples = result_buffer->total_results;
+    int new_num_of_tuples = total_results;
     //printf("Total results %d\n",new_num_of_tuples);
     newTable->numTuples = new_num_of_tuples;
     newTable->numColumns = new_num_of_columns;
@@ -88,7 +95,7 @@ struct nMap *create_table_from_matches_filter(struct result_buffer *result_buffe
         newTable->ncolumns[i].tuples = malloc(sizeof(uint64_t) * (new_num_of_tuples));
     };
     //printf("now you see me\n");
-    for (int i = 0; i < result_buffer->total_results; i++)
+    for (int i = 0; i < total_results; i++)
     {
         for (int w = 0; w < table1->numColumns; w++)
         {   
@@ -107,18 +114,25 @@ struct nMap *create_table_from_matches_filter(struct result_buffer *result_buffe
 }
 
 struct nMap *create_table_from_matches(struct result_buffer *result_buffer, struct nMap *table1, struct nMap *table2)
-{
+{   
+    struct result_buffer* temp_buffer;
+    temp_buffer = result_buffer;
+    int total_results;
     //printf("create table from matches buffer \n");
     if (result_buffer->total_results == 0)
     {
         //printf("Rare \n");
         return NULL;
     }
+    while(temp_buffer->next_result_buffer){
+        temp_buffer = temp_buffer->next_result_buffer;
+    }
+    total_results = temp_buffer->total_results;
     //printf("Table 1 columns %d \n",table1->numColumns);
     //printf("Table 2 columns %d \n",table2->numColumns);
     struct nMap *newTable = malloc(sizeof(struct nMap));
     int new_num_of_columns = table1->numColumns + table2->numColumns;
-    int new_num_of_tuples = result_buffer->total_results;
+    int new_num_of_tuples = total_results;
     newTable->numTuples = new_num_of_tuples;
     newTable->numColumns = new_num_of_columns;
     int results_from_buffer = 0;
@@ -128,7 +142,7 @@ struct nMap *create_table_from_matches(struct result_buffer *result_buffer, stru
     {
         newTable->ncolumns[i].tuples = malloc(sizeof(uint64_t) * (new_num_of_tuples));
     };
-    for (int i = 0; i < result_buffer->total_results; i++)
+    for (int i = 0; i < total_results; i++)
     {
         for (int w = 0; w < table1->numColumns; w++)
         {
@@ -379,7 +393,7 @@ void run_query(struct nMapArray *tables, struct query query)
     for (int y = 0; y <= query.sums_num; y++)
     {   
         if(newTable == NULL){
-            printf("NULL");
+            printf("NULL ");
             continue;
         }
         temp = 0;
