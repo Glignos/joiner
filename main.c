@@ -52,9 +52,7 @@ int main (int argc, char* argv[]){
   for (i=0 ; i<arrayN.nCount ; i++){
     arrayN.nMap=malloc(arrayN.nCount * sizeof(struct nMap));
   }
-  // for(i=0; i<arrayN.nCount ; i++){
-  //   arrayN.nMap[i]=NULL;
-  // }
+
   
  
   while (scanf("%s", buf)){
@@ -83,7 +81,26 @@ int main (int argc, char* argv[]){
             ncnt=ncnt+1;
             strcpy(str, "");
         }else{
+          arrayN.nMap= realloc(arrayN.nMap, (2 * arrayN.nCount) * sizeof(struct nMap));
+          arrayN.nCount=arrayN.nCount*2;
           fprintf(fptr, "ooops");
+          fprintf(fptr, "path: %s\n", buf);
+            fp=fopen(buf,"rb");
+            
+            if(fp==NULL)
+              {
+                  
+                fprintf(fptr,"%s File NOT FOUND!\n", buf);
+                //exit(1);
+              }
+              else{
+                fprintf(fptr, "path: %s opened\n", buf);
+              }
+
+            arrayN.nMap[ncnt]=nmapCreate(fp);
+            fclose(fp);
+            ncnt=ncnt+1;
+            strcpy(str, "");
           //realloc
         }
   }
@@ -135,25 +152,7 @@ int main (int argc, char* argv[]){
     }*/
 
 
-  //   printf( "Ente size for R :");
-  //   scanf("%d", &r);
-
-  //   printf("Size given: %d\n", r);
-
-  //   array = malloc(sizeof(struct myArray));
-  //   array->tuples = malloc(sizeof(struct myTuple) * r);
-	// array->num_of_tuples = r;
-  //   for(i=0; i<r; i++){
-  //     array->tuples[i].rowId=i;
-  //     array->tuples[i].value=rand()%100;
-  //   }
-  //   array2 = malloc(sizeof(struct myArray));
-  //   array2->tuples = malloc(sizeof(struct myTuple) * r);
-	// array2->num_of_tuples = r;
-  //   for(i=0; i<r; i++){
-  //     array2->tuples[i].rowId=i;
-  //     array2->tuples[i].value=rand()%100;
-  //   }
+  
 
 
     //buckets_table = hash_data_array(array);
@@ -169,57 +168,14 @@ int main (int argc, char* argv[]){
 
 
 
-    //printf("Give file1 path:\n");
-    //scanf("%s",&fnamer);
-    // fp=fopen(fnamer,"rb");
-    // if(fp==NULL)
-    // 	{
-    // 		printf("\n%s\" File NOT FOUND!\n",fnamer);
-    // 	//	getch();
-    // 		exit(1);
-    // 	}
-    //   nmap1=nmapCreate(fp);
-    //   fclose(fp);
-    //   printf("Num tuples: %" PRIu64 "\n", nmap1->numTuples); /*for testing*/
-    //   printf("Num of numColumns: %" PRIu64 "\n", nmap1->numColumns); /*for testing*/
-    //   //Left here for testing
-    //   for (j=0; j<nmap1->numColumns; j++){
-    //     for (i=0; i<nmap1->numTuples; i++){
-    //       printf("Column:%d Row:%d Value: %" PRIu64 "\n", j, i, nmap1->ncolumns[j].tuples[i]);
-    //     }
-    //   }
-
-      // buckets_table = hash_data_array(nmap1->ncolumns[2], nmap1->numTuples);
-      // psum_table = create_psum_table(buckets_table);
-      // arrayBctChn=createBucketChainArray(buckets_table);
+  
 
 
 
-    // printf("Give file2 path:\n");
-    // scanf("%s",&fnamer);
-    // fp=fopen(fnamer,"rb");
-    // if(fp==NULL)
-    // 	{
-    // 		printf("\n%s\" File NOT FOUND!\n",fnamer);
-    // 	//	getch();
-    // 		exit(1);
-    // 	}
-    //   nmap2=nmapCreate(fp);
 
-   //resultsnm=match_arrays(buckets_table, arrayBctChn, nmap2->numTuples, nmap2->ncolumns[1]); 
+ 
 
-    //resultsnm=search(arrayN.nMap[0], arrayN.nMap[1],  ">", NULL); 
 
-    // for (i=0; i<nmap1->numColumns; i++){
-    //   free(nmap1->ncolumns[i].tuples);
-    // }
-    // free(nmap1->ncolumns);
-    // for (i=0; i<nmap2->numColumns; i++){
-    // //   free(nmap2->ncolumns[i].tuples);
-    // // }
-    // free(nmap2->ncolumns);
-
-    //free(array->tuples);
   //   for(i=0; i<buckets_table->num_of_buckets; i++){
   //     free(arrayBctChn[i].bucket);
   //     free(arrayBctChn[i].chain);
@@ -232,6 +188,12 @@ int main (int argc, char* argv[]){
   //   free(psum_table->sums);
   //   free(psum_table);
   fprintf(fptr, "AAAAAAA2");
+  
+  for (i=0; i<arrayN.nCount; i++){
+    free_nMap(arrayN.nMap[i]);
+
+  }
+  free(arrayN.nMap);
 
   fclose(fptr);
 
