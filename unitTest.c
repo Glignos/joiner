@@ -14,6 +14,14 @@ int main (int argc, char* argv[]){
     
     int i=0;
     struct nColumns* nColumn1;
+    struct nMap *nmap=NULL, *nmapNew=NULL;
+
+
+    nmap= malloc (sizeof (struct nMap));
+
+    nmap->numColumns=3;
+    nmap->numTuples=10;
+    
 
     nColumn1=malloc(3 * sizeof(struct nColumns));
     for (i=0; i<3; i++){
@@ -25,6 +33,8 @@ int main (int argc, char* argv[]){
         nColumn1[1].tuples[i]=i+10;
         nColumn1[2].tuples[i]=i;
     }
+
+    nmap->ncolumns=nColumn1;
 
     for (i=0; i<10; i++){
         printf("Tuple Value: %" PRIu64 "\n", nColumn1[0].tuples[i]);
@@ -97,6 +107,9 @@ int main (int argc, char* argv[]){
     printf("Results number: 0\n");
     }else{
        printf("Results number: %d\n", resultsnm->total_results);
+       printf("Testing create_table_from_matches_filter \n");
+       nmapNew=create_table_from_matches_filter(resultsnm, nmap); 
+       printf("New table, number of columns: %d and number of tuples %d ", nmapNew->numColumns, nmapNew->numTuples);
     }
 
     for(i=0; i<3; i++){
